@@ -1,6 +1,6 @@
 <?php
-include '../includes/header.php';
-include '../includes/conexion.php'
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_cliente = $_POST['id_cliente'];
@@ -68,4 +68,4 @@ $viajes = $conn->query("SELECT * FROM Viajes");
     </div>
 </main>
 
-<?php include '../includes/footer.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/footer.php'; ?>

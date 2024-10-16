@@ -1,5 +1,6 @@
 <?php
-include '../includes/conexion.php'
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
 $id_reserva = $_GET['id'];
 

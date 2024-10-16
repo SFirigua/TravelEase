@@ -1,6 +1,6 @@
 <?php
-include '../includes/header.php';
-include '../includes/conexion.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
 // Obtener todas las reservas
 $sql = "SELECT r.id_reserva, c.nombre, v.origen, v.destino, r.fecha_reserva, r.estado 
@@ -52,4 +52,4 @@ $result = $conn->query($sql);
     </div>
 </main>
 
-<?php include '../includes/footer.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/footer.php'; ?>

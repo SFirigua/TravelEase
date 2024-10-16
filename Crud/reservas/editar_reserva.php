@@ -1,7 +1,6 @@
 <?php
-include '../includes/header.php';
-include '../includes/conexion.php'
-
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 $id_reserva = $_GET['id'];
 
 // Obtener la reserva existente
@@ -30,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
     <div class="container mt-5">
         <h2>Editar Reserva</h2>
         <form method="POST">
@@ -78,4 +77,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </main>
 
-<?php include '../includes/footer.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/footer.php'; ?>
