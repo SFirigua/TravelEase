@@ -16,38 +16,38 @@
                 <div class="position-sticky">
                     <h2 class="text-center py-4">TravelEase</h2>
                     <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link active" aria-current="page" href="/TravelEase/crud/index.php">
                                 <i class="fas fa-home"></i> Inicio
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="reservas/reservas.php">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" href="/TravelEase/crud/reservas/reservas.php">
                                 <i class="fas fa-ticket-alt"></i> Reservas
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="viajes.php">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" href="/TravelEase/crud/viajes/viajes.php">
                                 <i class="fas fa-plane"></i> Viajes
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="transportes.php">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" href="/TravelEase/crud/transportes/transportes.php">
                                 <i class="fas fa-bus-alt"></i> Transportes
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="clientes.php">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" href="/TravelEase/crud/clientes/clientes.php">
                                 <i class="fas fa-users"></i> Clientes
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="rutas.php">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" href="/TravelEase/crud/rutas/rutas.php">
                                 <i class="fas fa-map-marked-alt"></i> Rutas
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="asientos.php">
+                        <li class="nav-item mb-3">
+                            <a class="nav-link" href="/TravelEase/crud/asientos/asientos.php">
                                 <i class="fas fa-chair"></i> Asientos
                             </a>
                         </li>

@@ -24,7 +24,7 @@ $clientes = $conn->query("SELECT * FROM Clientes");
 $viajes = $conn->query("SELECT * FROM Viajes");
 ?>
 
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
     <div class="container mt-5">
         <h2>Agregar Reserva</h2>
         <form method="POST">
