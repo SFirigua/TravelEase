@@ -10,11 +10,11 @@ $cliente = $conn->query($sql)->fetch_assoc();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $numero_celular = $_POST['numero_celular'];
-    $direccion = $_POST['direccion'];
+    $email = $_POST['email'];
     $fecha_nacimiento = $_POST['fecha_nacimiento'];
     $genero = $_POST['genero'];
 
-    $sql = "UPDATE Clientes SET nombre='$nombre', numero_celular='$numero_celular', direccion='$direccion', fecha_nacimiento='$fecha_nacimiento', genero='$genero' 
+    $sql = "UPDATE Clientes SET nombre='$nombre', numero_celular='$numero_celular', email='$email', fecha_nacimiento='$fecha_nacimiento', genero='$genero' 
             WHERE id_cliente = $id_cliente";
     
     if ($conn->query($sql) === TRUE) {
@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" class="form-control" id="numero_celular" name="numero_celular" value="<?php echo $cliente['numero_celular']; ?>" required>
             </div>
             <div class="mb-3">
-                <label for="direccion" class="form-label">Dirección</label>
-                <input type="email" class="form-control" id="direccion" name="direccion" value="<?php echo $cliente['direccion']; ?>" required>
+                <label for="email" class="form-label">Dirección</label>
+                <input type="email" class="form-control" id="email" name="email" value="<?php echo $cliente['email']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>

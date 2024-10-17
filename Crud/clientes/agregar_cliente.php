@@ -5,17 +5,25 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $numero_celular = $_POST['numero_celular'];
-    $direccion = $_POST['direccion'];
+    $email = $_POST['email'];
     $fecha_nacimiento = $_POST['fecha_nacimiento'];
     $genero = $_POST['genero'];
 
-    $sql = "INSERT INTO Clientes (nombre, numero_celular, direccion, fecha_nacimiento, genero) 
-            VALUES ('$nombre', '$numero_celular', '$direccion', '$fecha_nacimiento', '$genero')";
-    
-    if ($conn->query($sql) === TRUE) {
-        echo "<div class='alert alert-success'>Cliente agregado con éxito</div>";
+    // Verifica si el correo electrónico ya existe
+    $checkEmail = "SELECT * FROM Clientes WHERE email='$email'";
+    $result = $conn->query($checkEmail);
+
+    if ($result->num_rows > 0) {
+        echo "<div class='alert alert-danger'>El correo electrónico ya está registrado.</div>";
     } else {
-        echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        $sql = "INSERT INTO Clientes (nombre, numero_celular, email, fecha_nacimiento, genero) 
+                VALUES ('$nombre', '$numero_celular', '$email', '$fecha_nacimiento', '$genero')";
+
+        if ($conn->query($sql) === TRUE) {
+            echo "<div class='alert alert-success'>Cliente agregado con éxito</div>";
+        } else {
+            echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        }
     }
 }
 ?>
@@ -33,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" class="form-control" id="numero_celular" name="numero_celular" required>
             </div>
             <div class="mb-3">
-                <label for="direccion" class="form-label">Correo Electronico</label>
-                <input type="email" class="form-control" id="direccion" name="direccion" required>
+                <label for="email" class="form-label">Correo Electronico</label>
+                <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="mb-3">
                 <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>

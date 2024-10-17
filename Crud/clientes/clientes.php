@@ -30,7 +30,7 @@ $result = $conn->query($sql);
                             <td><?php echo $row['id_cliente']; ?></td>
                             <td><?php echo $row['nombre']; ?></td>
                             <td><?php echo $row['numero_celular']; ?></td>
-                            <td><?php echo $row['direccion']; ?></td>
+                            <td><?php echo $row['email']; ?></td>
                             <td><?php echo $row['fecha_nacimiento']; ?></td>
                             <td><?php echo $row['genero']; ?></td>
                             <td>
