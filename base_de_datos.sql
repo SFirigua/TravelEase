@@ -64,9 +64,11 @@ CREATE TABLE Reservas (
 CREATE TABLE Asientos (
     id_asiento INT AUTO_INCREMENT PRIMARY KEY,
     id_viaje INT,
+    id_transporte INT,
     id_reserva INT,
     numero_asiento VARCHAR(10) NOT NULL UNIQUE,
     clase ENUM('Economica', 'Premium', 'Ejecutiva') NOT NULL,
     FOREIGN KEY (id_viaje) REFERENCES Viajes(id_viaje),
     FOREIGN KEY (id_reserva) REFERENCES Reservas(id_reserva)
+    FOREIGN KEY (id_transporte) REFERENCES Reservas(id_transporte)
 );
