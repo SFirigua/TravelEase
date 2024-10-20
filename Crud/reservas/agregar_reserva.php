@@ -1,4 +1,5 @@
 <?php
+session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
@@ -13,9 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             VALUES ('$id_cliente', '$id_viaje', '$fecha_reserva', '$reservas_vendidas', '$estado')";
     
     if ($conn->query($sql) === TRUE) {
-        echo "<div class='alert alert-success'>Reserva agregada con éxito</div>";
+        $_SESSION['success'] = "Reserva agregada con exito.";
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
     } else {
-        echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        $_SESSION['error'] = "Error: " . $conn->error;
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
     }
 }
 

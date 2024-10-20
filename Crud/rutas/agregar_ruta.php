@@ -1,4 +1,5 @@
 <?php
+session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
@@ -18,9 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             VALUES ($id_transporte, '$origen', '$destino', '$duracion', '$paradas_intermedias', '$frecuencia')";
     
     if ($conn->query($sql) === TRUE) {
-        echo "<div class='alert alert-success'>Ruta agregada con éxito</div>";
+        $_SESSION['success'] = "Ruta agregada con exito.";
+        header("Location: /TravelEase/crud/rutas/rutas.php");
+        exit();
     } else {
-        echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        $_SESSION['error'] = "Error: " . $conn->error;
+        header("Location: /TravelEase/crud/rutas/rutas.php");
+        exit();
     }
 }
 ?>

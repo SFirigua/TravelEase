@@ -1,4 +1,5 @@
 <?php
+session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 $id_cliente = $_GET['id'];
@@ -18,9 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             WHERE id_cliente = $id_cliente";
     
     if ($conn->query($sql) === TRUE) {
-        echo "<div class='alert alert-success'>Cliente actualizado con éxito</div>";
+            $_SESSION['success'] = "Cliente actualizado con exito.";
+            header("Location: /TravelEase/crud/clientes/clientes.php");
+            exit();
     } else {
-        echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        $_SESSION['error'] = "Error: " . $conn->error;
+        header("Location: /TravelEase/crud/clientes/clientes.php");
+        exit();
     }
 }
 ?>

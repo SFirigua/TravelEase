@@ -1,4 +1,5 @@
 <?php
+session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
@@ -14,15 +15,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $conn->query($checkEmail);
 
     if ($result->num_rows > 0) {
-        echo "<div class='alert alert-danger'>El correo electrónico ya está registrado.</div>";
+        $_SESSION['error'] = "El correo electrónico ya está registrado.";
+        header("Location: /TravelEase/crud/clientes/clientes.php");
+        exit();
     } else {
         $sql = "INSERT INTO Clientes (nombre, numero_celular, email, fecha_nacimiento, genero) 
                 VALUES ('$nombre', '$numero_celular', '$email', '$fecha_nacimiento', '$genero')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "<div class='alert alert-success'>Cliente agregado con éxito</div>";
+            $_SESSION['success'] = "Cliente agregado con éxito";
+            header("Location: /TravelEase/crud/clientes/clientes.php");
+            exit();
         } else {
-            echo "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+            $_SESSION['error'] = "Error: " . $conn->error;
+            header("Location: /TravelEase/crud/clientes/clientes.php");
+            exit();
         }
     }
 }
