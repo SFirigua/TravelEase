@@ -13,18 +13,17 @@ CREATE TABLE Clientes (
 
 CREATE TABLE Transportes (
     id_transporte INT AUTO_INCREMENT PRIMARY KEY,
+    id_ruta INT,
     tipo_transporte ENUM('Avión', 'Tren', 'Autobús') NOT NULL,
     nombre_transporte VARCHAR(100) NOT NULL,
     num_asientos INT NOT NULL,
-    id_ruta INT,
     FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta)
 );
 
 CREATE TABLE Viajes (
     id_viaje INT AUTO_INCREMENT PRIMARY KEY,
     id_transporte INT,
-    origen VARCHAR(100) NOT NULL,
-    destino VARCHAR(100) NOT NULL,
+    id_ruta INT,
     fecha_salida DATE NOT NULL,
     hora_salida TIME NOT NULL, 
     fecha_llegada DATE NOT NULL,
@@ -32,6 +31,7 @@ CREATE TABLE Viajes (
     precio DECIMAL(10, 2) NOT NULL,
     estado ENUM('Programado', 'Cancelado', 'En curso', 'Finalizado') DEFAULT 'Programado',
     FOREIGN KEY (id_transporte) REFERENCES Transportes(id_transporte)
+    FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta)
 );
 
 CREATE TABLE Rutas (
@@ -40,7 +40,6 @@ CREATE TABLE Rutas (
     origen VARCHAR(100) NOT NULL,
     destino VARCHAR(100) NOT NULL,
     duracion TIME NOT NULL,
-    paradas_intermedias VARCHAR(255),
     frecuencia ENUM('Diaria', 'Semanal', 'Mensual') DEFAULT 'Diaria',
 );
 
