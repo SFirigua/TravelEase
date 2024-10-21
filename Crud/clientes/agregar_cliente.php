@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="genero" class="form-label">Género</label>
                 <select id="genero" name="genero" class="form-select" required>
+                <option value="" disabled selected>Selecciona el genero</option>
                     <option value="M">Masculino</option>
                     <option value="F">Femenino</option>
                     <option value="Otro">Otro</option>

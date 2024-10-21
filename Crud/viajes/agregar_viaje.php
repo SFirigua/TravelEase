@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="id_transporte" class="form-label">Transporte</label>
                 <select class="form-select" id="id_transporte" name="id_transporte" required>
-                    <option value="">Seleccione un transporte</option>
+                    <option value="" disabled selected>Seleccione un transporte</option>
                     <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
                         <option value="<?php echo $transporte['id_transporte']; ?>">
                     <?php echo $transporte['nombre_transporte'] . ' - Ruta: ' . $transporte['origen'] . ' a ' . $transporte['destino']; ?>
@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="estado" class="form-label">Estado</label>
                 <select class="form-select" id="estado" name="estado">
+                    <option value="" disabled selected>Seleccione un estado</option>
                     <option value="Programado">Programado</option>
                     <option value="Cancelado">Cancelado</option>
                     <option value="En curso">En curso</option>

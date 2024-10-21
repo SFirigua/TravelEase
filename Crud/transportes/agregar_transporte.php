@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="tipo_transporte" class="form-label">Tipo de Transporte</label>
                 <select class="form-select" id="tipo_transporte" name="tipo_transporte" required>
-                    <option value="">Seleccione un tipo</option>
+                    <option value="" disabled selected>Seleccione un tipo</option>
                     <option value="Avión">Avión</option>
                     <option value="Tren">Tren</option>
                     <option value="Autobús">Autobús</option>

@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="frecuencia" class="form-label">Frecuencia</label>
                 <select class="form-select" id="frecuencia" name="frecuencia">
+                    <option value="" disabled selected>Selecciona la frecuencia de la ruta</option>
                     <option value="Diaria">Diaria</option>
                     <option value="Semanal">Semanal</option>
                     <option value="Mensual">Mensual</option>

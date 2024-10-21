@@ -37,7 +37,7 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
             <div class="mb-3">
                 <label for="id_cliente" class="form-label">Cliente</label>
                 <select id="id_cliente" name="id_cliente" class="form-select" required>
-                    <option value="">Selecciona un Cliente</option>
+                    <option value="" disabled selected>Selecciona un cliente</option>
                     <?php while ($row = $clientes->fetch_assoc()): ?>
                         <option value="<?php echo $row['id_cliente']; ?>"><?php echo $row['nombre']; ?></option>
                     <?php endwhile; ?>
@@ -46,6 +46,7 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
             <div class="mb-3">
                 <label for="asiento">Asiento:</label>
                 <select name="asiento" id="asiento" class="form-control">
+                    <option value="" disabled selected>seleccione una clase</option>
                     <option value="Economica">Económica</option>
                     <option value="Premium">Premium</option>
                     <option value="Ejecutiva">Ejecutiva</option>
@@ -54,7 +55,7 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
             <div class="mb-3">
                 <label for="id_viaje" class="form-label">Viaje</label>
                 <select id="id_viaje" name="id_viaje" class="form-select" required>
-                    <option value="">Selecciona un Viaje</option>
+                    <option value="" disabled selected>Selecciona un Viaje</option>
                     <?php while ($row = $viajes->fetch_assoc()): ?>
                         <option value="<?php echo $row['id_viaje']; ?>"><?php echo $row['origen'] . ' a ' . $row['destino']; ?></option>
                 <?php endwhile; ?>
@@ -71,6 +72,7 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
             <div class="mb-3">
                 <label for="estado" class="form-label">Estado</label>
                 <select id="estado" name="estado" class="form-select" required>
+                    <option value="" disabled selected>Selecciona un estado</option>
                     <option value="Pendiente">Pendiente</option>
                     <option value="Confirmada">Confirmada</option>
                     <option value="Cancelada">Cancelada</option>

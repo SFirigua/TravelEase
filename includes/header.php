@@ -46,11 +46,6 @@
                                 <i class="fas fa-map-marked-alt"></i> Rutas
                             </a>
                         </li>
-                        <li class="nav-item mb-3">
-                            <a class="nav-link" href="/TravelEase/crud/asientos/asientos.php">
-                                <i class="fas fa-chair"></i> Asientos
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </nav>
