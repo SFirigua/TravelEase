@@ -17,7 +17,7 @@
                     <h2 class="text-center py-4">TravelEase</h2>
                     <ul class="nav flex-column">
                         <li class="nav-item mb-3">
-                            <a class="nav-link active" aria-current="page" href="/TravelEase/crud/index.php">
+                            <a class="nav-link active" aria-current="page" href="/TravelEase/index.php">
                                 <i class="fas fa-home"></i> Inicio
                             </a>
                         </li>

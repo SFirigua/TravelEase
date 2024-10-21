@@ -1,4 +1,4 @@
-<?php include '../includes/header.php'; ?>
+<?php include 'includes/header.php'; ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
     <div class="container mt-5">
@@ -20,4 +20,4 @@
 </main>
 
 
-<?php include '../includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
