@@ -15,11 +15,12 @@ $viajes = $conn->query("SELECT * FROM Viajes");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_cliente = $_POST['id_cliente'];
     $id_viaje = $_POST['id_viaje'];
+    $asiento = $_POST['asiento'];
     $fecha_reserva = $_POST['fecha_reserva'];
     $reservas_vendidas = $_POST['reservas_vendidas'];
     $estado = $_POST['estado'];
 
-    $sql = "UPDATE Reservas SET id_cliente='$id_cliente', id_viaje='$id_viaje', fecha_reserva='$fecha_reserva', reservas_vendidas='$reservas_vendidas', estado='$estado' 
+    $sql = "UPDATE Reservas SET id_cliente='$id_cliente', id_viaje='$id_viaje', fecha_reserva='$fecha_reserva', reservas_vendidas='$reservas_vendidas', estado='$estado', asiento='$asiento' 
             WHERE id_reserva = $id_reserva";
     
     if ($conn->query($sql) === TRUE) {
@@ -58,6 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <?php echo $row['origen'] . ' a ' . $row['destino']; ?>
                         </option>
                     <?php endwhile; ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="asiento" class="form-label">Asiento</label>
+                <select id="asiento" name="asiento" class="form-select" required>
+                    <option value="Economica" <?php echo ($reserva['asiento'] == 'Economica') ? 'selected' : ''; ?>>Económica</option>
+                    <option value="Premium" <?php echo ($reserva['asiento'] == 'Premium') ? 'selected' : ''; ?>>Premium</option>
+                    <option value="Ejecutiva" <?php echo ($reserva['asiento'] == 'Ejecutiva') ? 'selected' : ''; ?>>Ejecutiva</option>
                 </select>
             </div>
             <div class="mb-3">

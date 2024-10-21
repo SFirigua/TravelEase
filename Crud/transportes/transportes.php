@@ -3,8 +3,10 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-// Obtener todos los transportes
-$sql = "SELECT * FROM Transportes";
+// Obtener todos los transportes con su ruta asociada
+$sql = "SELECT t.*, r.nombre_ruta, r.origen, r.destino 
+        FROM Transportes t 
+        LEFT JOIN Rutas r ON t.id_ruta = r.id_ruta";
 $result = $conn->query($sql);
 ?>
 
@@ -13,8 +15,8 @@ $result = $conn->query($sql);
         <h2>Lista de Transportes</h2>
         <a href="agregar_transporte.php" class="btn btn-success mb-3">Agregar Transporte</a>
 
-                <!-- Mostrar mensaje de error -->
-                <?php if (isset($_SESSION['error'])): ?>
+        <!-- Mostrar mensaje de error -->
+        <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
                 <?php
                 echo $_SESSION['error'];
@@ -23,8 +25,8 @@ $result = $conn->query($sql);
             </div>
         <?php endif; ?>
 
-                <!-- Mostrar mensaje de éxito -->
-                <?php if (isset($_SESSION['success'])): ?>
+        <!-- Mostrar mensaje de éxito -->
+        <?php if (isset($_SESSION['success'])): ?>
             <div class="alert alert-success">
                 <?php
                 echo $_SESSION['success'];
@@ -39,7 +41,10 @@ $result = $conn->query($sql);
                     <th>ID</th>
                     <th>Tipo de Transporte</th>
                     <th>Nombre del Transporte</th>
-                    <th>Número de Asientos</th>
+                    <th>N° Asientos</th>
+                    <th>Ruta</th>
+                    <th>Origen</th>
+                    <th>Destino</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -51,6 +56,9 @@ $result = $conn->query($sql);
                             <td><?php echo $row['tipo_transporte']; ?></td>
                             <td><?php echo $row['nombre_transporte']; ?></td>
                             <td><?php echo $row['num_asientos']; ?></td>
+                            <td><?php echo $row['nombre_ruta']; ?></td>
+                            <td><?php echo $row['origen']; ?></td>
+                            <td><?php echo $row['destino']; ?></td>
                             <td>
                                 <a href="editar_transporte.php?id=<?php echo $row['id_transporte']; ?>" class="btn btn-warning">Editar</a>
                                 
@@ -84,7 +92,7 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5" class="text-center">No hay transportes registrados</td>
+                        <td colspan="8" class="text-center">No hay transportes registrados</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

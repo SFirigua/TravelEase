@@ -8,20 +8,19 @@ $id_ruta = $_GET['id'];
 $sql = "SELECT * FROM Rutas WHERE id_ruta = $id_ruta";
 $ruta = $conn->query($sql)->fetch_assoc();
 
-// Obtener transportes para el dropdown
-$sql_transportes = "SELECT * FROM Transportes";
-$result_transportes = $conn->query($sql_transportes);
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_transporte = $_POST['id_transporte'];
+    $nombre_ruta = $_POST['nombre_ruta'];
     $origen = $_POST['origen'];
     $destino = $_POST['destino'];
     $duracion = $_POST['duracion'];
-    $paradas_intermedias = $_POST['paradas_intermedias'];
     $frecuencia = $_POST['frecuencia'];
 
-    $sql = "UPDATE Rutas SET id_transporte='$id_transporte', origen='$origen', destino='$destino', 
-            duracion='$duracion', paradas_intermedias='$paradas_intermedias', frecuencia='$frecuencia' 
+    $sql = "UPDATE Rutas SET 
+            nombre_ruta='$nombre_ruta', 
+            origen='$origen', 
+            destino='$destino', 
+            duracion='$duracion', 
+            frecuencia='$frecuencia' 
             WHERE id_ruta = $id_ruta";
     
     if ($conn->query($sql) === TRUE) {
@@ -41,32 +40,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Editar Ruta</h2>
         <form method="POST">
             <div class="mb-3">
-                <label for="id_transporte" class="form-label">Transporte</label>
-                <select class="form-select" id="id_transporte" name="id_transporte" required>
-                    <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
-                        <option value="<?php echo $transporte['id_transporte']; ?>" 
-                            <?php echo ($transporte['id_transporte'] == $ruta['id_transporte']) ? 'selected' : ''; ?>>
-                            <?php echo $transporte['nombre_transporte']; ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
+                <label for="nombre_ruta" class="form-label">Nombre Ruta</label>
+                <input type="text" class="form-control" id="nombre_ruta" name="nombre_ruta" value="<?php echo htmlspecialchars($ruta['nombre_ruta']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="origen" class="form-label">Origen</label>
-                <input type="text" class="form-control" id="origen" name="origen" value="<?php echo $ruta['origen']; ?>" required>
+                <input type="text" class="form-control" id="origen" name="origen" value="<?php echo htmlspecialchars($ruta['origen']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="destino" class="form-label">Destino</label>
-                <input type="text" class="form-control" id="destino" name="destino" value="<?php echo $ruta['destino']; ?>" required>
+                <input type="text" class="form-control" id="destino" name="destino" value="<?php echo htmlspecialchars($ruta['destino']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="duracion" class="form-label">Duración</label>
-                <input type="time" class="form-control" id="duracion" name="duracion" value="<?php echo $ruta['duracion']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="paradas_intermedias" class="form-label">Paradas Intermedias</label>
-                <input type="text" class="form-control" id="paradas_intermedias" name="paradas_intermedias" 
-                    value="<?php echo $ruta['paradas_intermedias']; ?>">
+                <input type="time" class="form-control" id="duracion" name="duracion" value="<?php echo htmlspecialchars($ruta['duracion']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="frecuencia" class="form-label">Frecuencia</label>

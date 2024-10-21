@@ -6,12 +6,13 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_cliente = $_POST['id_cliente'];
     $id_viaje = $_POST['id_viaje'];
+    $asiento = $_POST['asiento'];
     $fecha_reserva = $_POST['fecha_reserva'];
     $reservas_vendidas = $_POST['reservas_vendidas'];
     $estado = $_POST['estado'];
 
-    $sql = "INSERT INTO Reservas (id_cliente, id_viaje, fecha_reserva, reservas_vendidas, estado) 
-            VALUES ('$id_cliente', '$id_viaje', '$fecha_reserva', '$reservas_vendidas', '$estado')";
+    $sql = "INSERT INTO Reservas (id_cliente, id_viaje, fecha_reserva, reservas_vendidas, estado, asiento) 
+            VALUES ('$id_cliente', '$id_viaje', '$fecha_reserva', '$reservas_vendidas', '$estado', '$asiento')";
     
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success'] = "Reserva agregada con exito.";
@@ -40,6 +41,14 @@ $viajes = $conn->query("SELECT * FROM Viajes");
                     <?php while ($row = $clientes->fetch_assoc()): ?>
                         <option value="<?php echo $row['id_cliente']; ?>"><?php echo $row['nombre']; ?></option>
                     <?php endwhile; ?>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="asiento">Asiento:</label>
+                <select name="asiento" id="asiento" class="form-control">
+                    <option value="Economica">Económica</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Ejecutiva">Ejecutiva</option>
                 </select>
             </div>
             <div class="mb-3">

@@ -3,20 +3,15 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-// Obtener transportes para el dropdown
-$sql_transportes = "SELECT * FROM Transportes";
-$result_transportes = $conn->query($sql_transportes);
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_transporte = $_POST['id_transporte'];
     $origen = $_POST['origen'];
     $destino = $_POST['destino'];
     $duracion = $_POST['duracion'];
-    $paradas_intermedias = $_POST['paradas_intermedias'];
     $frecuencia = $_POST['frecuencia'];
+    $nombre_ruta = $_POST['nombre_ruta'];
 
-    $sql = "INSERT INTO Rutas (id_transporte, origen, destino, duracion, paradas_intermedias, frecuencia) 
-            VALUES ($id_transporte, '$origen', '$destino', '$duracion', '$paradas_intermedias', '$frecuencia')";
+    $sql = "INSERT INTO Rutas (nombre_ruta, origen, destino, duracion, frecuencia) 
+            VALUES ('$nombre_ruta', '$origen', '$destino', '$duracion', '$frecuencia')";
     
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success'] = "Ruta agregada con exito.";
@@ -35,13 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Agregar Ruta</h2>
         <form method="POST">
             <div class="mb-3">
-                <label for="id_transporte" class="form-label">Transporte</label>
-                <select class="form-select" id="id_transporte" name="id_transporte" required>
-                    <option value="">Seleccione un transporte</option>
-                    <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
-                        <option value="<?php echo $transporte['id_transporte']; ?>"><?php echo $transporte['nombre_transporte']; ?></option>
-                    <?php endwhile; ?>
-                </select>
+                <label for="nombre_ruta" class="form-label">Nombre Ruta</label>
+                <input type="text" class="form-control" id="nombre_ruta" name="nombre_ruta" required>
             </div>
             <div class="mb-3">
                 <label for="origen" class="form-label">Origen</label>
@@ -54,10 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="duracion" class="form-label">Duración</label>
                 <input type="time" class="form-control" id="duracion" name="duracion" required>
-            </div>
-            <div class="mb-3">
-                <label for="paradas_intermedias" class="form-label">Paradas Intermedias</label>
-                <input type="text" class="form-control" id="paradas_intermedias" name="paradas_intermedias">
             </div>
             <div class="mb-3">
                 <label for="frecuencia" class="form-label">Frecuencia</label>

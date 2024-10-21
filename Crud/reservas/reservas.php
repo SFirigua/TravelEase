@@ -4,7 +4,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
 // Obtener todas las reservas
-$sql = "SELECT r.id_reserva, c.nombre, v.origen, v.destino, r.fecha_reserva, r.estado 
+$sql = "SELECT r.id_reserva, c.nombre, v.origen, v.destino, r.fecha_reserva, r.estado, r.asiento
         FROM Reservas r 
         JOIN Clientes c ON r.id_cliente = c.id_cliente 
         JOIN Viajes v ON r.id_viaje = v.id_viaje";
@@ -41,6 +41,7 @@ $result = $conn->query($sql);
                 <tr>
                     <th>ID</th>
                     <th>Cliente</th>
+                    <th>Asiento</th> 
                     <th>Origen</th>
                     <th>Destino</th>
                     <th>Fecha Reserva</th>
@@ -54,6 +55,7 @@ $result = $conn->query($sql);
                         <tr>
                             <td><?php echo $row['id_reserva']; ?></td>
                             <td><?php echo $row['nombre']; ?></td>
+                            <td><?php echo $row['asiento']; ?></td>
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>
                             <td><?php echo $row['fecha_reserva']; ?></td>
