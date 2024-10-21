@@ -5,17 +5,19 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 $id_viaje = $_GET['id'];
 
 // Obtener el viaje existente
-$sql = "SELECT * FROM Viajes WHERE id_viaje = $id_viaje";
+$sql = "SELECT V.*, R.origen, R.destino FROM Viajes V JOIN Rutas R ON V.id_ruta = R.id_ruta WHERE V.id_viaje = $id_viaje";
 $viaje = $conn->query($sql)->fetch_assoc();
 
 // Obtener transportes para el dropdown
-$sql_transportes = "SELECT * FROM Transportes";
+$sql_transportes = "
+    SELECT T.*, R.origen, R.destino 
+    FROM Transportes T
+    JOIN Rutas R ON T.id_ruta = R.id_ruta
+";
 $result_transportes = $conn->query($sql_transportes);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_transporte = $_POST['id_transporte'];
-    $origen = $_POST['origen'];
-    $destino = $_POST['destino'];
     $fecha_salida = $_POST['fecha_salida'];
     $hora_salida = $_POST['hora_salida'];
     $fecha_llegada = $_POST['fecha_llegada'];
@@ -23,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $precio = $_POST['precio'];
     $estado = $_POST['estado'];
 
-    $sql = "UPDATE Viajes SET id_transporte='$id_transporte', origen='$origen', destino='$destino', 
+    $sql = "UPDATE Viajes SET id_transporte='$id_transporte', 
             fecha_salida='$fecha_salida', hora_salida='$hora_salida', 
             fecha_llegada='$fecha_llegada', hora_llegada='$hora_llegada', 
             precio='$precio', estado='$estado' WHERE id_viaje=$id_viaje";
@@ -50,18 +52,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
                         <option value="<?php echo $transporte['id_transporte']; ?>" 
                         <?php echo ($transporte['id_transporte'] == $viaje['id_transporte']) ? 'selected' : ''; ?>>
-                            <?php echo $transporte['nombre_transporte']; ?>
+                            <?php echo $transporte['nombre_transporte'] . ' - Ruta: ' . $transporte['origen'] . ' a ' . $transporte['destino']; ?>
                         </option>
                     <?php endwhile; ?>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="origen" class="form-label">Origen</label>
-                <input type="text" class="form-control" id="origen" name="origen" value="<?php echo $viaje['origen']; ?>" required>
+                <input type="text" class="form-control" id="origen" name="origen" value="<?php echo $viaje['origen']; ?>" required readonly>
             </div>
             <div class="mb-3">
                 <label for="destino" class="form-label">Destino</label>
-                <input type="text" class="form-control" id="destino" name="destino" value="<?php echo $viaje['destino']; ?>" required>
+                <input type="text" class="form-control" id="destino" name="destino" value="<?php echo $viaje['destino']; ?>" required readonly>
             </div>
             <div class="mb-3">
                 <label for="fecha_salida" class="form-label">Fecha Salida</label>

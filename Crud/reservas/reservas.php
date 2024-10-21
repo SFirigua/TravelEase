@@ -4,10 +4,12 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
 // Obtener todas las reservas
-$sql = "SELECT r.id_reserva, c.nombre, v.origen, v.destino, r.fecha_reserva, r.estado, r.asiento
-        FROM Reservas r 
-        JOIN Clientes c ON r.id_cliente = c.id_cliente 
-        JOIN Viajes v ON r.id_viaje = v.id_viaje";
+$sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, r.fecha_reserva, r.estado, r.asiento
+        FROM Reservas r
+        JOIN Clientes c ON r.id_cliente = c.id_cliente
+        JOIN Viajes v ON r.id_viaje = v.id_viaje
+        JOIN Rutas rt ON v.id_ruta = rt.id_ruta
+";
 $result = $conn->query($sql);
 ?>
 
@@ -92,7 +94,7 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="7" class="text-center">No hay reservas registradas</td>
+                        <td colspan="8" class="text-center">No hay reservas registradas</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

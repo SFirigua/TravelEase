@@ -10,7 +10,7 @@ $reserva = $conn->query($sql)->fetch_assoc();
 
 // Obtener clientes y viajes para los select
 $clientes = $conn->query("SELECT * FROM Clientes");
-$viajes = $conn->query("SELECT * FROM Viajes");
+$viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v JOIN Rutas rt ON v.id_ruta = rt.id_ruta");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_cliente = $_POST['id_cliente'];

@@ -3,14 +3,16 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-// Obtener transportes para el dropdown
-$sql_transportes = "SELECT * FROM Transportes";
+// Obtener Rutas y transportes
+$sql_transportes = "
+    SELECT T.*, R.origen, R.destino 
+    FROM Transportes T
+    JOIN Rutas R ON T.id_ruta = R.id_ruta
+";
 $result_transportes = $conn->query($sql_transportes);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_transporte = $_POST['id_transporte'];
-    $origen = $_POST['origen'];
-    $destino = $_POST['destino'];
     $fecha_salida = $_POST['fecha_salida'];
     $hora_salida = $_POST['hora_salida'];
     $fecha_llegada = $_POST['fecha_llegada'];
@@ -18,11 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $precio = $_POST['precio'];
     $estado = $_POST['estado'];
 
-    $sql = "INSERT INTO Viajes (id_transporte, origen, destino, fecha_salida, hora_salida, 
+    $sql_ruta = "SELECT id_ruta FROM Transportes WHERE id_transporte = $id_transporte";
+    $result_ruta = $conn->query($sql_ruta);
+    $ruta = $result_ruta->fetch_assoc();
+    $id_ruta = $ruta['id_ruta'];
+
+    $sql = "INSERT INTO Viajes (id_transporte, id_ruta, fecha_salida, hora_salida, 
             fecha_llegada, hora_llegada, precio, estado) 
-            VALUES ($id_transporte, '$origen', '$destino', '$fecha_salida', '$hora_salida', 
+            VALUES ($id_transporte, $id_ruta, '$fecha_salida', '$hora_salida', 
             '$fecha_llegada', '$hora_llegada', $precio, '$estado')";
-    
+
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success'] = "Viaje agregado con éxito";
         header("Location: /TravelEase/crud/viajes/viajes.php");
@@ -44,17 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <select class="form-select" id="id_transporte" name="id_transporte" required>
                     <option value="">Seleccione un transporte</option>
                     <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
-                        <option value="<?php echo $transporte['id_transporte']; ?>"><?php echo $transporte['nombre_transporte']; ?></option>
+                        <option value="<?php echo $transporte['id_transporte']; ?>">
+                    <?php echo $transporte['nombre_transporte'] . ' - Ruta: ' . $transporte['origen'] . ' a ' . $transporte['destino']; ?>
+                    </option>
                     <?php endwhile; ?>
                 </select>
-            </div>
-            <div class="mb-3">
-                <label for="origen" class="form-label">Origen</label>
-                <input type="text" class="form-control" id="origen" name="origen" required>
-            </div>
-            <div class="mb-3">
-                <label for="destino" class="form-label">Destino</label>
-                <input type="text" class="form-control" id="destino" name="destino" required>
             </div>
             <div class="mb-3">
                 <label for="fecha_salida" class="form-label">Fecha Salida</label>

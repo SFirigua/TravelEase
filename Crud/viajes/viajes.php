@@ -3,8 +3,11 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-// Obtener todos los viajes
-$sql = "SELECT V.*, T.nombre_transporte FROM Viajes V JOIN Transportes T ON V.id_transporte = T.id_transporte";
+// Obtener todos los transportes
+$sql = "SELECT V.*, T.nombre_transporte, R.origen, R.destino 
+        FROM Viajes V 
+        JOIN Transportes T ON V.id_transporte = T.id_transporte
+        JOIN Rutas R ON V.id_ruta = R.id_ruta";
 $result = $conn->query($sql);
 ?>
 
