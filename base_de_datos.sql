@@ -54,3 +54,4 @@ CREATE TABLE Reservas (
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
     FOREIGN KEY (id_viaje) REFERENCES Viajes(id_viaje)
 );
+
