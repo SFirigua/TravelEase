@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row min-vh-100">
             <!-- Barra de Navegación Vertical -->
             <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="position-sticky">

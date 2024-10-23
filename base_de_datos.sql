@@ -2,8 +2,8 @@
 CREATE TABLE Clientes (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    primer_apellido VARCHAR(100) NOT NULL,
-    segundo_apellido VARCHAR(100) DEFAULT NULL,
+    primer_apellido VARCHAR(100) ,
+    segundo_apellido VARCHAR(100) ,
     email VARCHAR(100) NOT NULL UNIQUE,
     numero_celular VARCHAR(15),
     direccion VARCHAR(255),

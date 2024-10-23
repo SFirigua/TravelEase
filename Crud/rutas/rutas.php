@@ -3,8 +3,24 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-// Obtener todas las rutas
-$sql = "SELECT * FROM Rutas";
+$rutas_por_pagina = 10;
+
+$sql_total = "SELECT COUNT(*) as total FROM Rutas";
+$result_total = $conn->query($sql_total);
+$total_rutas = $result_total->fetch_assoc()['total'];
+
+$total_paginas = ceil($total_rutas / $rutas_por_pagina);
+
+$pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+if ($pagina_actual < 1) {
+    $pagina_actual = 1;
+} elseif ($pagina_actual > $total_paginas) {
+    $pagina_actual = $total_paginas;
+}
+
+$offset = ($pagina_actual - 1) * $rutas_por_pagina;
+
+$sql = "SELECT * FROM Rutas LIMIT $offset, $rutas_por_pagina";
 $result = $conn->query($sql);
 ?>
 
@@ -58,10 +74,8 @@ $result = $conn->query($sql);
                             <td>
                                 <a href="editar_ruta.php?id=<?php echo $row['id_ruta']; ?>" class="btn btn-warning">Editar</a>
                                 
-                                <!-- Botón para eliminar que abre el modal -->
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_ruta']; ?>">Eliminar</button>
                                 
-                                <!-- Modal de confirmación para cada ruta -->
                                 <div class="modal fade" id="confirmModal<?php echo $row['id_ruta']; ?>" tabindex="-1" aria-labelledby="confirmModalLabel<?php echo $row['id_ruta']; ?>" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -74,7 +88,6 @@ $result = $conn->query($sql);
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                <!-- Formulario para eliminar la ruta -->
                                                 <form method="POST" action="eliminar_ruta.php">
                                                     <input type="hidden" name="id_ruta" value="<?php echo $row['id_ruta']; ?>">
                                                     <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -88,13 +101,38 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="9" class="text-center">No hay rutas registradas</td>
+                        <td colspan="7" class="text-center">No hay rutas registradas</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <nav aria-label="Paginación">
+            <ul class="pagination justify-content-center">
+                <?php if ($pagina_actual > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?pagina=<?php echo $pagina_actual - 1; ?>" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                    <li class="page-item <?php if ($i == $pagina_actual) echo 'active'; ?>">
+                        <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($pagina_actual < $total_paginas): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?pagina=<?php echo $pagina_actual + 1; ?>" aria-label="Siguiente">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
     </div>
 </main>
-
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/footer.php'; ?>

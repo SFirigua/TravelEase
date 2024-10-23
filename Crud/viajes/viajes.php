@@ -3,11 +3,28 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-// Obtener todos los transportes
+$viajes_por_pagina = 10;
+
+$sql_total = "SELECT COUNT(*) as total FROM Viajes";
+$result_total = $conn->query($sql_total);
+$total_viajes = $result_total->fetch_assoc()['total'];
+
+$total_paginas = ceil($total_viajes / $viajes_por_pagina);
+
+$pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+if ($pagina_actual < 1) {
+    $pagina_actual = 1;
+} elseif ($pagina_actual > $total_paginas) {
+    $pagina_actual = $total_paginas;
+}
+
+$offset = ($pagina_actual - 1) * $viajes_por_pagina;
+
 $sql = "SELECT V.*, T.nombre_transporte, R.origen, R.destino 
         FROM Viajes V 
         JOIN Transportes T ON V.id_transporte = T.id_transporte
-        JOIN Rutas R ON V.id_ruta = R.id_ruta";
+        JOIN Rutas R ON V.id_ruta = R.id_ruta
+        LIMIT $offset, $viajes_por_pagina";
 $result = $conn->query($sql);
 ?>
 
@@ -16,8 +33,7 @@ $result = $conn->query($sql);
         <h2>Lista de Viajes</h2>
         <a href="agregar_viaje.php" class="btn btn-success mb-3">Agregar Viaje</a>
         
-          <!-- Mostrar mensaje de error -->
-          <?php if (isset($_SESSION['error'])): ?>
+        <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
                 <?php
                 echo $_SESSION['error'];
@@ -26,8 +42,7 @@ $result = $conn->query($sql);
             </div>
         <?php endif; ?>
 
-                <!-- Mostrar mensaje de éxito -->
-                <?php if (isset($_SESSION['success'])): ?>
+        <?php if (isset($_SESSION['success'])): ?>
             <div class="alert alert-success">
                 <?php
                 echo $_SESSION['success'];
@@ -69,10 +84,8 @@ $result = $conn->query($sql);
                             <td>
                                 <a href="editar_viaje.php?id=<?php echo $row['id_viaje']; ?>" class="btn btn-warning">Editar</a>
                                 
-                                <!-- Botón para eliminar que abre el modal -->
                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_viaje']; ?>">Eliminar</button>
                                 
-                                <!-- Modal de confirmación para cada viaje -->
                                 <div class="modal fade" id="confirmModal<?php echo $row['id_viaje']; ?>" tabindex="-1" aria-labelledby="confirmModalLabel<?php echo $row['id_viaje']; ?>" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -85,7 +98,6 @@ $result = $conn->query($sql);
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                <!-- Formulario para eliminar el viaje -->
                                                 <form method="POST" action="eliminar_viaje.php">
                                                     <input type="hidden" name="id_viaje" value="<?php echo $row['id_viaje']; ?>">
                                                     <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -104,6 +116,32 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <nav aria-label="Paginación">
+            <ul class="pagination justify-content-center">
+                <?php if ($pagina_actual > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?pagina=<?php echo $pagina_actual - 1; ?>" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                    <li class="page-item <?php if ($i == $pagina_actual) echo 'active'; ?>">
+                        <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($pagina_actual < $total_paginas): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?pagina=<?php echo $pagina_actual + 1; ?>" aria-label="Siguiente">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
     </div>
 </main>
 
