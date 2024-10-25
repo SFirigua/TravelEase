@@ -76,9 +76,9 @@ $result = $conn->query($sql);
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>
                             <td>
-                                <a href="editar_transporte.php?id=<?php echo $row['id_transporte']; ?>" class="btn btn-warning">Editar</a>
+                                <a href="editar_transporte.php?id=<?php echo $row['id_transporte']; ?>" class="btn btn-warning"> <i class="fas fa-edit"></i> </a>
                                 
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_transporte']; ?>">Eliminar</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_transporte']; ?>"> <i class="fas fa-trash-alt"></i> </button>
                                 
                                 <div class="modal fade" id="confirmModal<?php echo $row['id_transporte']; ?>" tabindex="-1" aria-labelledby="confirmModalLabel<?php echo $row['id_transporte']; ?>" aria-hidden="true">
                                     <div class="modal-dialog">

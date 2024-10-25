@@ -20,7 +20,8 @@ if ($pagina_actual < 1) {
 
 $offset = ($pagina_actual - 1) * $rutas_por_pagina;
 
-$sql = "SELECT * FROM Rutas LIMIT $offset, $rutas_por_pagina";
+$sql = "SELECT id_ruta, nombre_ruta, origen, destino, TIME_FORMAT(duracion, '%H:%i') AS duracion, frecuencia 
+        FROM Rutas LIMIT $offset, $rutas_por_pagina";
 $result = $conn->query($sql);
 ?>
 

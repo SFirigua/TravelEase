@@ -54,17 +54,17 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Transporte</th>
-                    <th>Origen</th>
-                    <th>Destino</th>
-                    <th>Fecha Salida</th>
-                    <th>Hora Salida</th>
-                    <th>Fecha Llegada</th>
-                    <th>Hora Llegada</th>
-                    <th>Precio</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <th class="align-middle">ID</th>
+                    <th class="align-middle">Transporte</th>
+                    <th class="align-middle">Origen</th>
+                    <th class="align-middle">Destino</th>
+                    <th class="align-middle">Fecha Salida</th>
+                    <th class="align-middle">Hora Salida</th>
+                    <th class="align-middle">Fecha Llegada</th>
+                    <th class="align-middle">Hora Llegada</th>
+                    <th class="align-middle">Precio</th>
+                    <th class="align-middle">Estado</th>
+                    <th class="align-middle">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,9 +82,9 @@ $result = $conn->query($sql);
                             <td><?php echo $row['precio']; ?></td>
                             <td><?php echo $row['estado']; ?></td>
                             <td>
-                                <a href="editar_viaje.php?id=<?php echo $row['id_viaje']; ?>" class="btn btn-warning">Editar</a>
+                                <a href="editar_viaje.php?id=<?php echo $row['id_viaje']; ?>" class="btn btn-warning"> <i class="fas fa-edit"></i> </a>
                                 
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_viaje']; ?>">Eliminar</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_viaje']; ?>"> <i class="fas fa-trash-alt"></i> </button>
                                 
                                 <div class="modal fade" id="confirmModal<?php echo $row['id_viaje']; ?>" tabindex="-1" aria-labelledby="confirmModalLabel<?php echo $row['id_viaje']; ?>" aria-hidden="true">
                                     <div class="modal-dialog">

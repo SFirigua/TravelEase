@@ -42,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" class="form-control" id="destino" name="destino" required>
             </div>
             <div class="mb-3">
-                <label for="duracion" class="form-label">Duración</label>
-                <input type="time" class="form-control" id="duracion" name="duracion" required>
+                <label for="duracion" class="form-label">Duración (HH:MM)</label>
+                <input type="text" class="form-control" id="duracion" name="duracion" placeholder="HH:MM" pattern="^([0-9]{1,2}):([0-5][0-9])$" required>
             </div>
             <div class="mb-3">
                 <label for="frecuencia" class="form-label">Frecuencia</label>

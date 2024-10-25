@@ -71,8 +71,8 @@ $result = $conn->query($sql);
                             <td><?php echo $row['fecha_nacimiento']; ?></td>
                             <td><?php echo $row['genero']; ?></td>
                             <td>
-                                <a href="editar_cliente.php?id=<?php echo $row['id_cliente']; ?>" class="btn btn-warning">Editar</a>
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_cliente']; ?>">Eliminar</button>
+                                <a href="editar_cliente.php?id=<?php echo $row['id_cliente']; ?>" class="btn btn-warning"> <i class="fas fa-edit"></i> </a>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_cliente']; ?>"> <i class="fas fa-trash-alt"></i> </button>
 
                                 <div class="modal fade" id="confirmModal<?php echo $row['id_cliente']; ?>" tabindex="-1" aria-labelledby="confirmModalLabel<?php echo $row['id_cliente']; ?>" aria-hidden="true">
                                     <div class="modal-dialog">

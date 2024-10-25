@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="mb-3">
                 <label for="duracion" class="form-label">Duración</label>
-                <input type="time" class="form-control" id="duracion" name="duracion" value="<?php echo htmlspecialchars($ruta['duracion']); ?>" required>
+                <input type="text" class="form-control" id="duracion" name="duracion" placeholder="HH:MM" pattern="^([0-9]{1,2}):([0-5][0-9])$" value="<?php echo htmlspecialchars($ruta['duracion']); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="frecuencia" class="form-label">Frecuencia</label>
