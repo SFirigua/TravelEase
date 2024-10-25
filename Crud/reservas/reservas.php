@@ -33,6 +33,7 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Reservas</h2>
         <a href="agregar_reserva.php" class="btn btn-success mb-3">Agregar Reserva</a>
+        <a href="reporte_reservas.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
 
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
@@ -55,7 +56,6 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Cliente</th>
                     <th>Asiento</th> 
                     <th>Origen</th>
@@ -69,7 +69,6 @@ $result = $conn->query($sql);
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo $row['id_reserva']; ?></td>
                             <td><?php echo $row['nombre']; ?></td>
                             <td><?php echo $row['asiento']; ?></td>
                             <td><?php echo $row['origen']; ?></td>

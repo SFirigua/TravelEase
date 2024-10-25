@@ -31,6 +31,7 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Transportes</h2>
         <a href="agregar_transporte.php" class="btn btn-success mb-3">Agregar Transporte</a>
+        <a href="reporte_transportes.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
 
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
@@ -54,7 +55,6 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Tipo de Transporte</th>
                     <th>Nombre del Transporte</th>
                     <th>N° Asientos</th>
@@ -68,7 +68,6 @@ $result = $conn->query($sql);
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo $row['id_transporte']; ?></td>
                             <td><?php echo $row['tipo_transporte']; ?></td>
                             <td><?php echo $row['nombre_transporte']; ?></td>
                             <td><?php echo $row['num_asientos']; ?></td>

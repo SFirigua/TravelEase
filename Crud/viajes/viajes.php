@@ -20,7 +20,14 @@ if ($pagina_actual < 1) {
 
 $offset = ($pagina_actual - 1) * $viajes_por_pagina;
 
-$sql = "SELECT V.*, T.nombre_transporte, R.origen, R.destino 
+$sql = "SELECT V.*, 
+               T.nombre_transporte, 
+               R.origen, 
+               R.destino,
+               DATE_FORMAT(V.fecha_salida, '%Y-%m-%d') AS fecha_salida,
+               TIME_FORMAT(V.hora_salida, '%H:%i') AS hora_salida,
+               DATE_FORMAT(V.fecha_llegada, '%Y-%m-%d') AS fecha_llegada,
+               TIME_FORMAT(V.hora_llegada, '%H:%i') AS hora_llegada
         FROM Viajes V 
         JOIN Transportes T ON V.id_transporte = T.id_transporte
         JOIN Rutas R ON V.id_ruta = R.id_ruta
@@ -32,6 +39,7 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Viajes</h2>
         <a href="agregar_viaje.php" class="btn btn-success mb-3">Agregar Viaje</a>
+        <a href="reporte_viajes.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
         
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
@@ -54,7 +62,6 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th class="align-middle">ID</th>
                     <th class="align-middle">Transporte</th>
                     <th class="align-middle">Origen</th>
                     <th class="align-middle">Destino</th>
@@ -71,7 +78,6 @@ $result = $conn->query($sql);
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo $row['id_viaje']; ?></td>
                             <td><?php echo $row['nombre_transporte']; ?></td>
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>

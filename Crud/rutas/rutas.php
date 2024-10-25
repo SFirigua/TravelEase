@@ -29,6 +29,7 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Rutas</h2>
         <a href="agregar_ruta.php" class="btn btn-success mb-3">Agregar Ruta</a>
+        <a href="reporte_rutas.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
 
         <!-- Mostrar mensaje de error -->
         <?php if (isset($_SESSION['error'])): ?>
@@ -53,7 +54,6 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre Ruta</th>
                     <th>Origen</th>
                     <th>Destino</th>
@@ -66,16 +66,15 @@ $result = $conn->query($sql);
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo $row['id_ruta']; ?></td>
                             <td><?php echo $row['nombre_ruta']; ?></td>
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>
                             <td><?php echo $row['duracion']; ?></td>
                             <td><?php echo $row['frecuencia']; ?></td>
                             <td>
-                                <a href="editar_ruta.php?id=<?php echo $row['id_ruta']; ?>" class="btn btn-warning">Editar</a>
+                                <a href="editar_ruta.php?id=<?php echo $row['id_ruta']; ?>" class="btn btn-warning"> <i class="fas fa-edit"></i> </a>
                                 
-                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_ruta']; ?>">Eliminar</button>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal<?php echo $row['id_ruta']; ?>"> <i class="fas fa-trash-alt"></i> </button>
                                 
                                 <div class="modal fade" id="confirmModal<?php echo $row['id_ruta']; ?>" tabindex="-1" aria-labelledby="confirmModalLabel<?php echo $row['id_ruta']; ?>" aria-hidden="true">
                                     <div class="modal-dialog">

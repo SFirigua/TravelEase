@@ -28,7 +28,8 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Clientes</h2>
         <a href="agregar_cliente.php" class="btn btn-success mb-3">Agregar Cliente</a>
-
+        <a href="reporte_clientes.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
+        
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
                 <?php
@@ -51,7 +52,6 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Número Celular</th>
                     <th>Correo Electrónico</th>
@@ -64,7 +64,6 @@ $result = $conn->query($sql);
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo $row['id_cliente']; ?></td>
                             <td><?php echo $row['nombre']; ?></td>
                             <td><?php echo $row['numero_celular']; ?></td>
                             <td><?php echo $row['email']; ?></td>
