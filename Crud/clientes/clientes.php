@@ -3,7 +3,7 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-$clientes_por_pagina = 10;
+$clientes_por_pagina = 5;
 
 $sql_total = "SELECT COUNT(*) as total FROM Clientes";
 $result_total = $conn->query($sql_total);
@@ -18,7 +18,7 @@ if ($pagina_actual < 1) {
     $pagina_actual = $total_paginas;
 }
 
-$offset = ($pagina_actual - 1) * $clientes_por_pagina;
+$offset = max(0, ($pagina_actual - 1) * $clientes_por_pagina);
 
 $sql = "SELECT * FROM Clientes LIMIT $offset, $clientes_por_pagina";
 $result = $conn->query($sql);

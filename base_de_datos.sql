@@ -1,14 +1,26 @@
 -- Crear la base de datos: travelease
+CREATE DATABASE IF NOT EXISTS travelease;
+USE travelease;
+
+CREATE TABLE Rutas (
+    id_ruta INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_ruta VARCHAR(255) NOT NULL,
+    origen VARCHAR(100) NOT NULL,
+    destino VARCHAR(100) NOT NULL,
+    duracion TIME NOT NULL,
+    frecuencia ENUM('Diaria', 'Semanal', 'Mensual') DEFAULT 'Diaria'
+);
+
 CREATE TABLE Clientes (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    primer_apellido VARCHAR(100) ,
-    segundo_apellido VARCHAR(100) ,
+    primer_apellido VARCHAR(100),
+    segundo_apellido VARCHAR(100),
     email VARCHAR(100) NOT NULL UNIQUE,
     numero_celular VARCHAR(15),
     direccion VARCHAR(255),
-    fecha_nacimiento DATE, 
-    genero ENUM('M', 'F', 'Otro') 
+    fecha_nacimiento DATE,
+    genero ENUM('M', 'F', 'Otro')
 );
 
 CREATE TABLE Transportes (
@@ -25,22 +37,13 @@ CREATE TABLE Viajes (
     id_transporte INT,
     id_ruta INT,
     fecha_salida DATE NOT NULL,
-    hora_salida TIME NOT NULL, 
+    hora_salida TIME NOT NULL,
     fecha_llegada DATE NOT NULL,
     hora_llegada TIME NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
     estado ENUM('Programado', 'Cancelado', 'En curso', 'Finalizado') DEFAULT 'Programado',
-    FOREIGN KEY (id_transporte) REFERENCES Transportes(id_transporte)
+    FOREIGN KEY (id_transporte) REFERENCES Transportes(id_transporte),
     FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta)
-);
-
-CREATE TABLE Rutas (
-    id_ruta INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_ruta VARCHAR(255) NOT NULL,
-    origen VARCHAR(100) NOT NULL,
-    destino VARCHAR(100) NOT NULL,
-    duracion TIME NOT NULL,
-    frecuencia ENUM('Diaria', 'Semanal', 'Mensual') DEFAULT 'Diaria',
 );
 
 CREATE TABLE Reservas (
@@ -54,4 +57,3 @@ CREATE TABLE Reservas (
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
     FOREIGN KEY (id_viaje) REFERENCES Viajes(id_viaje)
 );
-

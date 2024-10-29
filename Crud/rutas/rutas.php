@@ -3,7 +3,7 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-$rutas_por_pagina = 10;
+$rutas_por_pagina = 5;
 
 $sql_total = "SELECT COUNT(*) as total FROM Rutas";
 $result_total = $conn->query($sql_total);
@@ -18,7 +18,7 @@ if ($pagina_actual < 1) {
     $pagina_actual = $total_paginas;
 }
 
-$offset = ($pagina_actual - 1) * $rutas_por_pagina;
+$offset = max(0, ($pagina_actual - 1) * $rutas_por_pagina);
 
 $sql = "SELECT id_ruta, nombre_ruta, origen, destino, TIME_FORMAT(duracion, '%H:%i') AS duracion, frecuencia 
         FROM Rutas LIMIT $offset, $rutas_por_pagina";

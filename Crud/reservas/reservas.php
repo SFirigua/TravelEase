@@ -3,7 +3,7 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-$reservas_por_pagina = 10;
+$reservas_por_pagina = 5;
 
 $sql_total = "SELECT COUNT(*) as total FROM Reservas";
 $result_total = $conn->query($sql_total);
@@ -18,7 +18,7 @@ if ($pagina_actual < 1) {
     $pagina_actual = $total_paginas;
 }
 
-$offset = ($pagina_actual - 1) * $reservas_por_pagina;
+$offset = max(0, ($pagina_actual - 1) * $reservas_por_pagina);
 
 $sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, r.fecha_reserva, r.estado, r.asiento
         FROM Reservas r

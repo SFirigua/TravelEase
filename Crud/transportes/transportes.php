@@ -3,7 +3,7 @@ session_start();
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
-$transportes_por_pagina = 10;
+$transportes_por_pagina = 5;
 
 $sql_total = "SELECT COUNT(*) as total FROM Transportes";
 $result_total = $conn->query($sql_total);
@@ -18,7 +18,7 @@ if ($pagina_actual < 1) {
     $pagina_actual = $total_paginas;
 }
 
-$offset = ($pagina_actual - 1) * $transportes_por_pagina;
+$offset = max(0, ($pagina_actual - 1) * $transportes_por_pagina);
 
 $sql = "SELECT t.*, r.nombre_ruta, r.origen, r.destino 
         FROM Transportes t 
