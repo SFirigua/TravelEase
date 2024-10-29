@@ -5,8 +5,11 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
+    $primer_apellido = $_POST['primer_apellido'];
+    $segundo_apellido = $_POST['segundo_apellido'];
     $numero_celular = $_POST['numero_celular'];
     $email = $_POST['email'];
+    $direccion = $_POST['direccion'];
     $fecha_nacimiento = $_POST['fecha_nacimiento'];
     $genero = $_POST['genero'];
 
@@ -19,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: /TravelEase/crud/clientes/clientes.php");
         exit();
     } else {
-        $sql = "INSERT INTO Clientes (nombre, numero_celular, email, fecha_nacimiento, genero) 
-                VALUES ('$nombre', '$numero_celular', '$email', '$fecha_nacimiento', '$genero')";
+        $sql = "INSERT INTO Clientes (nombre, primer_apellido, segundo_apellido, numero_celular, email, direccion, fecha_nacimiento, genero) 
+                VALUES ('$nombre', '$primer_apellido', '$segundo_apellido', '$numero_celular', '$email', '$direccion', '$fecha_nacimiento', '$genero')";
 
         if ($conn->query($sql) === TRUE) {
             $_SESSION['success'] = "Cliente agregado con éxito";
@@ -44,12 +47,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" class="form-control" id="nombre" name="nombre" required>
             </div>
             <div class="mb-3">
+                <label for="primer_apellido" class="form-label">Primer Apellido</label>
+                <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" required>
+            </div>
+            <div class="mb-3">
+                <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
+                <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido">
+            </div>
+            <div class="mb-3">
                 <label for="numero_celular" class="form-label">Número Celular</label>
                 <input type="text" class="form-control" id="numero_celular" name="numero_celular" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Correo Electronico</label>
+                <label for="email" class="form-label">Correo Electrónico</label>
                 <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" required>
             </div>
             <div class="mb-3">
                 <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
@@ -58,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="genero" class="form-label">Género</label>
                 <select id="genero" name="genero" class="form-select" required>
-                <option value="" disabled selected>Selecciona el genero</option>
+                    <option value="" disabled selected>Selecciona el género</option>
                     <option value="M">Masculino</option>
                     <option value="F">Femenino</option>
                     <option value="Otro">Otro</option>

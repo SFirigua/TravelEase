@@ -16,7 +16,7 @@ $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Reservas');
 
 // Encabezados de la tabla en Excel
-$headers = ['Cliente', 'Asiento', 'Origen', 'Destino', 'Fecha Reserva'];
+$headers = ['Cliente', 'Asiento', 'Origen', 'Destino', 'Fecha Reserva', 'Estado'];
 $column = 'A';
 
 foreach ($headers as $header) {
@@ -39,10 +39,10 @@ $headerStyle = [
     ],
 ];
 
-$sheet->getStyle('A1:E1')->applyFromArray($headerStyle);
+$sheet->getStyle('A1:F1')->applyFromArray($headerStyle);
 
 // Obtener las reservas de la base de datos
-$sql = "SELECT c.nombre AS cliente, r.asiento, rt.origen, rt.destino, r.fecha_reserva
+$sql = "SELECT c.nombre AS cliente, r.asiento, rt.origen, rt.destino, r.fecha_reserva, r.estado
         FROM Reservas r
         JOIN Clientes c ON r.id_cliente = c.id_cliente
         JOIN Viajes v ON r.id_viaje = v.id_viaje
@@ -58,9 +58,10 @@ if ($result->num_rows > 0) {
         $sheet->setCellValue('C' . $rowNum, $row['origen']);
         $sheet->setCellValue('D' . $rowNum, $row['destino']);
         $sheet->setCellValue('E' . $rowNum, $row['fecha_reserva']);
+        $sheet->setCellValue('F' . $rowNum, $row['estado']);
         
         // Aplicar alineación centrada a cada fila de datos
-        $sheet->getStyle('A' . $rowNum . ':E' . $rowNum)->applyFromArray([
+        $sheet->getStyle('A' . $rowNum . ':F' . $rowNum)->applyFromArray([
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
             ],
@@ -80,10 +81,10 @@ $styleArray = [
     ],
 ];
 
-$sheet->getStyle('A1:E' . ($rowNum - 1))->applyFromArray($styleArray);
+$sheet->getStyle('A1:F' . ($rowNum - 1))->applyFromArray($styleArray);
 
 // Ajustar automáticamente el ancho de las columnas
-foreach (range('A', 'E') as $columnID) {
+foreach (range('A', 'F') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);
 }
 

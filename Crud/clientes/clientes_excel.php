@@ -16,7 +16,7 @@ $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Clientes');
 
 // Encabezados de la tabla en Excel
-$headers = ['Nombre', 'Número Celular', 'Correo Electrónico', 'Fecha de Nacimiento', 'Género'];
+$headers = ['Nombre', 'Primer Apellido', 'Segundo Apellido',  'Número Celular', 'Correo Electrónico', 'Residencia', 'Fecha de Nacimiento', 'Género', ];
 $column = 'A';
 
 foreach ($headers as $header) {
@@ -39,10 +39,10 @@ $headerStyle = [
     ],
 ];
 
-$sheet->getStyle('A1:E1')->applyFromArray($headerStyle);
+$sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
 
 // Obtener los clientes de la base de datos
-$sql = "SELECT nombre, numero_celular, email, fecha_nacimiento, genero FROM Clientes";
+$sql = "SELECT id_cliente, nombre, primer_apellido, segundo_apellido, numero_celular, email, direccion, fecha_nacimiento, genero FROM Clientes";
 $result = $conn->query($sql);
 
 // Llenar los datos en la hoja de cálculo
@@ -50,13 +50,16 @@ $rowNum = 2;
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $sheet->setCellValue('A' . $rowNum, $row['nombre']);
-        $sheet->setCellValue('B' . $rowNum, $row['numero_celular']);
-        $sheet->setCellValue('C' . $rowNum, $row['email']);
-        $sheet->setCellValue('D' . $rowNum, $row['fecha_nacimiento']);
-        $sheet->setCellValue('E' . $rowNum, $row['genero']);
+        $sheet->setCellValue('B' . $rowNum, $row['primer_apellido']);
+        $sheet->setCellValue('C' . $rowNum, $row['segundo_apellido']);
+        $sheet->setCellValue('D' . $rowNum, $row['numero_celular']);
+        $sheet->setCellValue('E' . $rowNum, $row['email']);
+        $sheet->setCellValue('F' . $rowNum, $row['direccion']);
+        $sheet->setCellValue('G' . $rowNum, $row['fecha_nacimiento']);
+        $sheet->setCellValue('H' . $rowNum, $row['genero']);
         
         // Centrar el contenido de cada celda
-        $sheet->getStyle('A' . $rowNum . ':E' . $rowNum)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('A' . $rowNum . ':H' . $rowNum)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         
         $rowNum++;
     }
@@ -73,13 +76,13 @@ $styleArray = [
 ];
 
 // Aplicar borde a los encabezados
-$sheet->getStyle('A1:E1')->applyFromArray($styleArray);
+$sheet->getStyle('A1:H1')->applyFromArray($styleArray);
 
 // Aplicar borde a todos los datos
-$sheet->getStyle('A2:E' . ($rowNum - 1))->applyFromArray($styleArray);
+$sheet->getStyle('A2:H' . ($rowNum - 1))->applyFromArray($styleArray);
 
 // Ajustar el ancho de las columnas
-foreach (range('A', 'E') as $columnID) {
+foreach (range('A', 'H') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);
 }
 
