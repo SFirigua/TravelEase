@@ -28,7 +28,8 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Clientes</h2>
         <a href="agregar_cliente.php" class="btn btn-success mb-3">Agregar Cliente</a>
-        <a href="reporte_clientes.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
+        <a href="reporte_clientes.php" class="btn btn-danger mb-3 ms-2" target="_blank">Reporte PDF</a>
+        <a href="clientes_excel.php" class="btn btn-primary mb-3 ms-2">Descargar en Excel</a>
         
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">

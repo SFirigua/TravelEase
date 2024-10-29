@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-<body>
-    <div class="container-fluid">
-        <div class="row min-vh-100">
+<body class="d-flex flex-column min-vh-100">
+    <div class="container-fluid flex-grow-1">
+        <div class="row">
             <!-- Barra de Navegación Vertical -->
             <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div class="position-sticky">

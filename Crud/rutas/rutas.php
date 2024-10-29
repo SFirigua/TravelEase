@@ -29,7 +29,8 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Rutas</h2>
         <a href="agregar_ruta.php" class="btn btn-success mb-3">Agregar Ruta</a>
-        <a href="reporte_rutas.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
+        <a href="reporte_rutas.php" class="btn btn-danger mb-3 ms-2" target="_blank">Reporte PDF</a>
+        <a href="rutas_excel.php" class="btn btn-primary mb-3 ms-2">Descargar en Excel</a>
 
         <!-- Mostrar mensaje de error -->
         <?php if (isset($_SESSION['error'])): ?>

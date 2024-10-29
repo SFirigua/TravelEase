@@ -39,7 +39,8 @@ $result = $conn->query($sql);
     <div class="container mt-5">
         <h2>Lista de Viajes</h2>
         <a href="agregar_viaje.php" class="btn btn-success mb-3">Agregar Viaje</a>
-        <a href="reporte_viajes.php" class="btn btn-primary mb-3 ms-2" target="_blank">Reporte PDF</a>
+        <a href="reporte_viajes.php" class="btn btn-danger mb-3 ms-2" target="_blank">Reporte PDF</a>
+        <a href="viajes_excel.php" class="btn btn-primary mb-3 ms-2">Descargar en Excel</a>
         
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
