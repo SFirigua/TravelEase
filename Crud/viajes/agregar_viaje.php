@@ -20,6 +20,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $precio = $_POST['precio'];
     $estado = $_POST['estado'];
 
+    // Obtener la fecha actual
+    $fecha_actual = date('Y-m-d');
+
+    // Validaciones
+    if ($fecha_salida < $fecha_actual) {
+        $_SESSION['error'] = "La fecha de salida no puede ser anterior a la fecha actual.";
+        header("Location: /TravelEase/crud/viajes/viajes.php");
+        exit();
+    }
+
+    if ($fecha_llegada < $fecha_actual) {
+        $_SESSION['error'] = "La fecha de llegada no puede ser anterior a la fecha actual.";
+        header("Location: /TravelEase/crud/viajes/viajes.php");
+        exit();
+    }
+
+    if ($fecha_llegada < $fecha_salida || ($fecha_llegada == $fecha_salida && $hora_llegada < $hora_salida)) {
+        $_SESSION['error'] = "La fecha y hora de llegada deben ser posteriores a la fecha y hora de salida.";
+        header("Location: /TravelEase/crud/viajes/viajes.php");
+        exit();
+    }
+
+    if ($fecha_llegada > $fecha_actual) {
+        $_SESSION['error'] = "La fecha de regreso no puede ser posterior a la fecha actual.";
+        header("Location: /TravelEase/crud/viajes/viajes.php");
+        exit();
+    }
+
     $sql_ruta = "SELECT id_ruta FROM Transportes WHERE id_transporte = $id_transporte";
     $result_ruta = $conn->query($sql_ruta);
     $ruta = $result_ruta->fetch_assoc();

@@ -11,11 +11,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $reservas_vendidas = $_POST['reservas_vendidas'];
     $estado = $_POST['estado'];
 
+    // Validaciones
+    if (empty($id_cliente) || !is_numeric($id_cliente)) {
+        $_SESSION['error'] = "Cliente no válido.";
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
+    }
+
+    if (empty($id_viaje) || !is_numeric($id_viaje)) {
+        $_SESSION['error'] = "Viaje no válido.";
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
+    }
+
+    if (empty($asiento) || !in_array($asiento, ['Economica', 'Premium', 'Ejecutiva'])) {
+        $_SESSION['error'] = "Clase de asiento no válida.";
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
+    }
+
+    if (empty($fecha_reserva)) {
+        $_SESSION['error'] = "La fecha de reserva es obligatoria.";
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
+    }
+
+    if (empty($reservas_vendidas) || !is_numeric($reservas_vendidas) || $reservas_vendidas < 1) {
+        $_SESSION['error'] = "Las reservas vendidas deben ser un número válido mayor a cero.";
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
+    }
+
+    if (empty($estado) || !in_array($estado, ['Pendiente', 'Confirmada', 'Cancelada'])) {
+        $_SESSION['error'] = "Estado no válido.";
+        header("Location: /TravelEase/crud/reservas/reservas.php");
+        exit();
+    }
+
+    // Inserción en la base de datos
     $sql = "INSERT INTO Reservas (id_cliente, id_viaje, fecha_reserva, reservas_vendidas, estado, asiento) 
             VALUES ('$id_cliente', '$id_viaje', '$fecha_reserva', '$reservas_vendidas', '$estado', '$asiento')";
     
     if ($conn->query($sql) === TRUE) {
-        $_SESSION['success'] = "Reserva agregada con exito.";
+        $_SESSION['success'] = "Reserva agregada con éxito.";
         header("Location: /TravelEase/crud/reservas/reservas.php");
         exit();
     } else {
@@ -45,8 +83,8 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
             </div>
             <div class="mb-3">
                 <label for="asiento">Asiento:</label>
-                <select name="asiento" id="asiento" class="form-control">
-                    <option value="" disabled selected>seleccione una clase</option>
+                <select name="asiento" id="asiento" class="form-control" required>
+                    <option value="" disabled selected>Seleccione una clase</option>
                     <option value="Economica">Económica</option>
                     <option value="Premium">Premium</option>
                     <option value="Ejecutiva">Ejecutiva</option>
@@ -58,7 +96,7 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
                     <option value="" disabled selected>Selecciona un Viaje</option>
                     <?php while ($row = $viajes->fetch_assoc()): ?>
                         <option value="<?php echo $row['id_viaje']; ?>"><?php echo $row['origen'] . ' a ' . $row['destino']; ?></option>
-                <?php endwhile; ?>
+                    <?php endwhile; ?>
                 </select>
             </div>
             <div class="mb-3">
@@ -67,7 +105,7 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
             </div>
             <div class="mb-3">
                 <label for="reservas_vendidas" class="form-label">Reservas Vendidas</label>
-                <input type="number" class="form-control" id="reservas_vendidas" name="reservas_vendidas" required>
+                <input type="number" class="form-control" id="reservas_vendidas" name="reservas_vendidas" required min="1">
             </div>
             <div class="mb-3">
                 <label for="estado" class="form-label">Estado</label>

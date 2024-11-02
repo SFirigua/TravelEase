@@ -12,8 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $num_asientos = $_POST['num_asientos'];
     $id_ruta = $_POST['id_ruta']; 
 
+    // Validaciones
+    if (empty($nombre_transporte) || preg_match("/[0-9]/", $nombre_transporte)) {
+        $_SESSION['error'] = "El nombre del transporte no puede contener números.";
+        header("Location: /TravelEase/crud/transportes/transportes.php");
+        exit();
+    }
+
+    // Inserción en la base de datos
     $sql = "INSERT INTO Transportes (tipo_transporte, nombre_transporte, num_asientos, id_ruta) 
-        VALUES ('$tipo_transporte', '$nombre_transporte', $num_asientos, $id_ruta)";
+            VALUES ('$tipo_transporte', '$nombre_transporte', $num_asientos, $id_ruta)";
     
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success'] = "Transporte agregado con éxito.";
@@ -42,18 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="mb-3">
                 <label for="nombre_transporte" class="form-label">Nombre del Transporte</label>
-                <input type="text" class="form-control" id="nombre_transporte" name="nombre_transporte" required>
+                <input type="text" class="form-control" id="nombre_transporte" name="nombre_transporte" required pattern="^[A-Za-z\s]+$">
             </div>
             <div class="mb-3">
                 <label for="id_ruta" class="form-label">Ruta</label>
                 <select class="form-select" id="id_ruta" name="id_ruta" required>
                     <option value="">Seleccione una ruta</option>
                     <?php if ($result_rutas->num_rows > 0): ?>
-                    <?php while ($row = $result_rutas->fetch_assoc()): ?>
-                    <option value="<?php echo $row['id_ruta']; ?>"><?php echo $row['nombre_ruta']; ?></option>
-                    <?php endwhile; ?>
+                        <?php while ($row = $result_rutas->fetch_assoc()): ?>
+                            <option value="<?php echo $row['id_ruta']; ?>"><?php echo $row['nombre_ruta']; ?></option>
+                        <?php endwhile; ?>
                     <?php else: ?>
-                    <option value="">No hay rutas disponibles</option>
+                        <option value="">No hay rutas disponibles</option>
                     <?php endif; ?>
                 </select>
             </div>
