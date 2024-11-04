@@ -20,7 +20,7 @@ if ($pagina_actual < 1) {
 
 $offset = max(0, ($pagina_actual - 1) * $reservas_por_pagina);
 
-$sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, r.fecha_reserva, r.estado, r.asiento
+$sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, r.fecha_reserva, r.estado, r.asiento, r.reservas_vendidas
         FROM Reservas r
         JOIN Clientes c ON r.id_cliente = c.id_cliente
         JOIN Viajes v ON r.id_viaje = v.id_viaje
@@ -62,6 +62,7 @@ $result = $conn->query($sql);
                     <th>Origen</th>
                     <th>Destino</th>
                     <th>Fecha Reserva</th>
+                    <th>N° Asientos</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
@@ -75,6 +76,7 @@ $result = $conn->query($sql);
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>
                             <td><?php echo $row['fecha_reserva']; ?></td>
+                            <td><?php echo $row['reservas_vendidas']; ?></td>                            
                             <td><?php echo $row['estado']; ?></td>
                             <td>
                                 <a href="editar_reserva.php?id=<?php echo $row['id_reserva']; ?>" class="btn btn-warning"> <i class="fas fa-edit"></i> </a>
@@ -105,7 +107,7 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="8" class="text-center">No hay reservas registradas</td>
+                        <td colspan="9" class="text-center">No hay reservas registradas</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

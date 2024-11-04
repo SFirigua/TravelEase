@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </select>
             </div>
             <div class="mb-3">
-                <label for="num_asientos" class="form-label">Número de Asientos</label>
+                <label for="num_asientos" class="form-label">Capacidad Maxima</label>
                 <input type="number" class="form-control" id="num_asientos" name="num_asientos" required>
             </div>
             <button type="submit" class="btn btn-primary">Agregar Transporte</button>

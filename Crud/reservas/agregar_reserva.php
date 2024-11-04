@@ -66,7 +66,7 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
                 <input type="date" class="form-control" id="fecha_reserva" name="fecha_reserva" required>
             </div>
             <div class="mb-3">
-                <label for="reservas_vendidas" class="form-label">Reservas Vendidas</label>
+                <label for="reservas_vendidas" class="form-label">N° Asientos</label>
                 <input type="number" class="form-control" id="reservas_vendidas" name="reservas_vendidas" required>
             </div>
             <div class="mb-3">

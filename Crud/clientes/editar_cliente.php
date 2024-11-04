@@ -12,22 +12,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $primer_apellido = $_POST['primer_apellido'];
     $segundo_apellido = $_POST['segundo_apellido'];
+    $tipo_identificacion = $_POST['tipo_identificacion'];
+    $numero_identificacion = $_POST['numero_identificacion'];
     $numero_celular = $_POST['numero_celular'];
     $email = $_POST['email'];
     $direccion = $_POST['direccion'];
     $fecha_nacimiento = $_POST['fecha_nacimiento'];
     $genero = $_POST['genero'];
 
-    $sql = "UPDATE Clientes SET nombre='$nombre', primer_apellido='$primer_apellido', segundo_apellido='$segundo_apellido', numero_celular='$numero_celular', email='$email', direccion='$direccion', fecha_nacimiento='$fecha_nacimiento', genero='$genero' 
+    // Verifica si el correo electrónico ya existe en otro cliente
+    $checkEmail = "SELECT * FROM Clientes WHERE email='$email' AND id_cliente != $id_cliente";
+    $resultEmail = $conn->query($checkEmail);
+    if ($resultEmail->num_rows > 0) {
+        $_SESSION['error'] = "El correo electrónico ya está registrado por otro cliente.";
+        header("Location: /TravelEase/crud/clientes/editar_cliente.php?id=$id_cliente");
+        exit();
+    }
+
+    // Verifica si el número de identificación ya existe en otro cliente
+    $checkID = "SELECT * FROM Clientes WHERE numero_identificacion='$numero_identificacion' AND id_cliente != $id_cliente";
+    $resultID = $conn->query($checkID);
+    if ($resultID->num_rows > 0) {
+        $_SESSION['error'] = "El número de identificación ya está registrado por otro cliente.";
+        header("Location: /TravelEase/crud/clientes/editar_cliente.php?id=$id_cliente");
+        exit();
+    }
+
+    $sql = "UPDATE Clientes SET nombre='$nombre', primer_apellido='$primer_apellido', segundo_apellido='$segundo_apellido', tipo_identificacion='$tipo_identificacion', numero_identificacion='$numero_identificacion', numero_celular='$numero_celular', email='$email', direccion='$direccion', fecha_nacimiento='$fecha_nacimiento', genero='$genero' 
             WHERE id_cliente = $id_cliente";
-    
+
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success'] = "Cliente actualizado con éxito.";
         header("Location: /TravelEase/crud/clientes/clientes.php");
         exit();
     } else {
         $_SESSION['error'] = "Error: " . $conn->error;
-        header("Location: /TravelEase/crud/clientes/clientes.php");
+        header("Location: /TravelEase/crud/clientes/editar_cliente.php?id=$id_cliente");
         exit();
     }
 }
@@ -48,6 +68,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
                 <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido" value="<?php echo $cliente['segundo_apellido']; ?>">
+            </div>
+            <div class="mb-3">
+                <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
+                <select id="tipo_identificacion" name="tipo_identificacion" class="form-select" required>
+                    <option value="Cédula de Ciudadanía" <?php echo $cliente['tipo_identificacion'] == 'Cédula de Ciudadanía' ? 'selected' : ''; ?>>Cédula de Ciudadanía</option>
+                    <option value="Cédula de Extranjería" <?php echo $cliente['tipo_identificacion'] == 'Cédula de Extranjería' ? 'selected' : ''; ?>>Cédula de Extranjería</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="numero_identificacion" class="form-label">Número de Identificación</label>
+                <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" value="<?php echo $cliente['numero_identificacion']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="numero_celular" class="form-label">Número Celular</label>

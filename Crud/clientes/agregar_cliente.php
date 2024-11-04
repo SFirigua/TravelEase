@@ -7,6 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $primer_apellido = $_POST['primer_apellido'];
     $segundo_apellido = $_POST['segundo_apellido'];
+    $tipo_identificacion = $_POST['tipo_identificacion'];
+    $numero_identificacion = $_POST['numero_identificacion'];
     $numero_celular = $_POST['numero_celular'];
     $email = $_POST['email'];
     $direccion = $_POST['direccion'];
@@ -15,25 +17,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Verifica si el correo electrónico ya existe
     $checkEmail = "SELECT * FROM Clientes WHERE email='$email'";
-    $result = $conn->query($checkEmail);
+    $resultEmail = $conn->query($checkEmail);
 
-    if ($result->num_rows > 0) {
+    if ($resultEmail->num_rows > 0) {
         $_SESSION['error'] = "El correo electrónico ya está registrado.";
+        header("Location: /TravelEase/crud/clientes/agregar_cliente.php");
+        exit();
+    }
+
+    // Verifica si el número de identificación ya existe
+    $checkID = "SELECT * FROM Clientes WHERE numero_identificacion='$numero_identificacion'";
+    $resultID = $conn->query($checkID);
+
+    if ($resultID->num_rows > 0) {
+        $_SESSION['error'] = "El número de identificación ya está registrado.";
+        header("Location: /TravelEase/crud/clientes/agregar_cliente.php");
+        exit();
+    }
+
+    $sql = "INSERT INTO Clientes (nombre, primer_apellido, segundo_apellido, tipo_identificacion, numero_identificacion, numero_celular, email, direccion, fecha_nacimiento, genero) 
+            VALUES ('$nombre', '$primer_apellido', '$segundo_apellido', '$tipo_identificacion', '$numero_identificacion', '$numero_celular', '$email', '$direccion', '$fecha_nacimiento', '$genero')";
+
+    if ($conn->query($sql) === TRUE) {
+        $_SESSION['success'] = "Cliente agregado con éxito";
         header("Location: /TravelEase/crud/clientes/clientes.php");
         exit();
     } else {
-        $sql = "INSERT INTO Clientes (nombre, primer_apellido, segundo_apellido, numero_celular, email, direccion, fecha_nacimiento, genero) 
-                VALUES ('$nombre', '$primer_apellido', '$segundo_apellido', '$numero_celular', '$email', '$direccion', '$fecha_nacimiento', '$genero')";
-
-        if ($conn->query($sql) === TRUE) {
-            $_SESSION['success'] = "Cliente agregado con éxito";
-            header("Location: /TravelEase/crud/clientes/clientes.php");
-            exit();
-        } else {
-            $_SESSION['error'] = "Error: " . $conn->error;
-            header("Location: /TravelEase/crud/clientes/clientes.php");
-            exit();
-        }
+        $_SESSION['error'] = "Error: " . $conn->error;
+        header("Location: /TravelEase/crud/clientes/clientes.php");
+        exit();
     }
 }
 ?>
@@ -41,6 +53,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
     <div class="container mt-5">
         <h2>Agregar Cliente</h2>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <?php
+                echo $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Mostrar mensaje de éxito -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <?php
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <form method="POST">
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
@@ -53,6 +85,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
                 <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido">
+            </div>
+            <div class="mb-3">
+                <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
+                <select id="tipo_identificacion" name="tipo_identificacion" class="form-select" required>
+                    <option value="" disabled selected>Selecciona el tipo de identificación</option>
+                    <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                    <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="numero_identificacion" class="form-label">Número de Identificación</label>
+                <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" required>
             </div>
             <div class="mb-3">
                 <label for="numero_celular" class="form-label">Número Celular</label>

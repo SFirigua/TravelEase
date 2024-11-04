@@ -13,9 +13,9 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
 
         // Ancho de las columnas
-        $ancho_columna = [40, 30, 60, 30, 20];
+        $ancho_columna = [30, 20, 40, 25, 50, 30]; // Modificar aquí para ajustar los anchos
         $num_columnas = count($ancho_columna);
-        $ancho_total = array_sum($ancho_columna); // Ancho total de la tabla
+        $ancho_total = array_sum($ancho_columna);
 
         // Calcular la posición X para centrar
         $pos_x = (210 - $ancho_total) / 2;
@@ -25,10 +25,11 @@ class PDF extends FPDF {
 
         // Crear las celdas de la cabecera
         $this->Cell($ancho_columna[0], 10, utf8_decode('Nombre'), 1);
-        $this->Cell($ancho_columna[1], 10, utf8_decode('Celular'), 1);
-        $this->Cell($ancho_columna[2], 10, utf8_decode('Email'), 1);
-        $this->Cell($ancho_columna[3], 10, utf8_decode('Fecha Nac.'), 1);
-        $this->Cell($ancho_columna[4], 10, utf8_decode('Género'), 1);
+        $this->Cell($ancho_columna[1], 10, utf8_decode('Género'), 1);
+        $this->Cell($ancho_columna[2], 10, utf8_decode('N° Identificación'), 1);
+        $this->Cell($ancho_columna[3], 10, utf8_decode('Celular'), 1);
+        $this->Cell($ancho_columna[4], 10, utf8_decode('Email'), 1);
+        $this->Cell($ancho_columna[5], 10, utf8_decode('Fecha Nac.'), 1);
         $this->Ln();
     }
     
@@ -36,9 +37,9 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 10);
 
         // Ancho de las columnas
-        $ancho_columna = [40, 30, 60, 30, 20];
+        $ancho_columna = [30, 20, 40, 25, 50, 30];
         $num_columnas = count($ancho_columna);
-        $ancho_total = array_sum($ancho_columna); // Ancho total de la tabla
+        $ancho_total = array_sum($ancho_columna); 
 
         // Calcular la posición X para centrar
         $pos_x = (210 - $ancho_total) / 2;
@@ -47,10 +48,11 @@ class PDF extends FPDF {
             // Establecer la posición X
             $this->SetX($pos_x);
             $this->Cell($ancho_columna[0], 10, utf8_decode($row['nombre']), 1);
-            $this->Cell($ancho_columna[1], 10, utf8_decode($row['numero_celular']), 1);
-            $this->Cell($ancho_columna[2], 10, utf8_decode($row['email']), 1);
-            $this->Cell($ancho_columna[3], 10, utf8_decode($row['fecha_nacimiento']), 1);
-            $this->Cell($ancho_columna[4], 10, utf8_decode($row['genero']), 1);
+            $this->Cell($ancho_columna[1], 10, utf8_decode($row['genero']), 1);
+            $this->Cell($ancho_columna[2], 10, utf8_decode($row['numero_identificacion']), 1);
+            $this->Cell($ancho_columna[3], 10, utf8_decode($row['numero_celular']), 1);
+            $this->Cell($ancho_columna[4], 10, utf8_decode($row['email']), 1);
+            $this->Cell($ancho_columna[5], 10, utf8_decode($row['fecha_nacimiento']), 1);
             $this->Ln();
         }
     }   

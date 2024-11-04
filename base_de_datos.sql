@@ -16,6 +16,8 @@ CREATE TABLE Clientes (
     nombre VARCHAR(100) NOT NULL,
     primer_apellido VARCHAR(100),
     segundo_apellido VARCHAR(100),
+    tipo_identificacion ENUM('Cédula de Ciudadanía', 'Cédula de Extranjería') NOT NULL,
+    numero_identificacion VARCHAR(20) NOT NULL UNIQUE;
     email VARCHAR(100) NOT NULL UNIQUE,
     numero_celular VARCHAR(15),
     direccion VARCHAR(255),

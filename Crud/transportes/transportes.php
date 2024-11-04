@@ -58,7 +58,7 @@ $result = $conn->query($sql);
                 <tr>
                     <th>Tipo de Transporte</th>
                     <th>Nombre del Transporte</th>
-                    <th>N° Asientos</th>
+                    <th>Capacidad Maxima</th>
                     <th>Ruta</th>
                     <th>Origen</th>
                     <th>Destino</th>

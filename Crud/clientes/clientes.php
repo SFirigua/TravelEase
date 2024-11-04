@@ -53,12 +53,14 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Número Celular</th>
-                    <th>Correo Electrónico</th>
-                    <th>Fecha de Nacimiento</th>
-                    <th>Género</th>
-                    <th>Acciones</th>
+                    <th class="align-middle">Nombre</th>
+                    <th class="align-middle">Tipo Identificación</th>
+                    <th class="align-middle">N° identificación</th>
+                    <th class="align-middle">Número Celular</th>
+                    <th class="align-middle">Correo Electrónico</th>
+                    <th class="align-middle">Fecha de Nacimiento</th>
+                    <th class="align-middle">Género</th>
+                    <th class="align-middle">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,6 +68,8 @@ $result = $conn->query($sql);
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
                             <td><?php echo $row['nombre']; ?></td>
+                            <td><?php echo $row['tipo_identificacion']; ?></td>
+                            <td><?php echo $row['numero_identificacion']; ?></td>                            
                             <td><?php echo $row['numero_celular']; ?></td>
                             <td><?php echo $row['email']; ?></td>
                             <td><?php echo $row['fecha_nacimiento']; ?></td>
@@ -99,7 +103,7 @@ $result = $conn->query($sql);
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="7" class="text-center">No hay clientes registrados</td>
+                        <td colspan="9" class="text-center">No hay clientes registrados</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
