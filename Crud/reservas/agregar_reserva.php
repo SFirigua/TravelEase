@@ -27,7 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // Obtener clientes y viajes para los select
 $clientes = $conn->query("SELECT * FROM Clientes");
-$viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v JOIN Rutas rt ON v.id_ruta = rt.id_ruta");
+$viajes = $conn->query("
+    SELECT v.id_viaje, t.tipo_transporte, rt.origen, rt.destino
+    FROM Viajes v
+    JOIN Rutas rt ON v.id_ruta = rt.id_ruta
+    JOIN Transportes t ON v.id_transporte = t.id_transporte
+");
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
@@ -57,8 +62,10 @@ $viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v J
                 <select id="id_viaje" name="id_viaje" class="form-select" required>
                     <option value="" disabled selected>Selecciona un Viaje</option>
                     <?php while ($row = $viajes->fetch_assoc()): ?>
-                        <option value="<?php echo $row['id_viaje']; ?>"><?php echo $row['origen'] . ' a ' . $row['destino']; ?></option>
-                <?php endwhile; ?>
+                        <option value="<?php echo $row['id_viaje']; ?>">
+                            <?php echo $row['tipo_transporte'] . ' - ' . $row['origen'] . ' a ' . $row['destino']; ?>
+                        </option>
+                    <?php endwhile; ?>
                 </select>
             </div>
             <div class="mb-3">

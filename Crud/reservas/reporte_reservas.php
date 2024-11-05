@@ -8,50 +8,44 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 16);
         $this->Cell(0, 10, utf8_decode('Reporte de Reservas'), 0, 1, 'C');
         $this->Ln(10);
+    }
 
+    function CabeceraReservas() {
         // Cabecera de la tabla
         $this->SetFont('Arial', 'B', 10);
-
-        // Ancho de las columnas
-        $ancho_columna = 30;
-        $num_columnas = 5;
-        $ancho_total = $ancho_columna * 5;
-
-        // Calcular la posición X para centrar
-        $pos_x = (210 - $ancho_total) / 2;
-
-        // Establecer la posición X
-        $this->SetX($pos_x);
-
-        // Crear las celdas de la cabecera
-        $this->Cell($ancho_columna, 10, utf8_decode('Cliente'), 1);
-        $this->Cell($ancho_columna, 10, 'Asiento', 1);
-        $this->Cell($ancho_columna, 10, utf8_decode('Origen'), 1);
-        $this->Cell($ancho_columna, 10, utf8_decode('Destino'), 1);
-        $this->Cell($ancho_columna, 10, 'Fecha Reserva', 1);
+        $this->Cell(30, 10, utf8_decode('Cliente'), 1);
+        $this->Cell(30, 10, 'Asiento', 1);
+        $this->Cell(30, 10, 'N. Asientos', 1);
+        $this->Cell(30, 10, 'Estado', 1);
+        $this->Cell(30, 10, 'Fecha Reserva', 1);
         $this->Ln();
     }
 
-    function TablaReservas($data) {
+    function TablaReservas($viajes) {
         $this->SetFont('Arial', '', 10);
-        
-        // Ancho de las columnas
-        $ancho_columna = 30;
-        $num_columnas = 5;
-        $ancho_total = $ancho_columna * 5; // Cambiar a 5 columnas
+        foreach ($viajes as $viaje) {
+            $this->SetFont('Arial', 'B', 12);
+            $this->Cell(0, 10, utf8_decode('Viaje: ' . $viaje['origen'] . ' a ' . $viaje['destino'] . ' - Transporte: ' . $viaje['tipo_transporte'] . ' ' . $viaje['nombre_transporte']), 0, 1, 'L');
+            $this->Ln(5);
 
-        // Calcular la posición X para centrar
-        $pos_x = (210 - $ancho_total) / 2;
-
-        foreach ($data as $row) {
-            // Establecer la posición X
-            $this->SetX($pos_x);
-            $this->Cell($ancho_columna, 10, utf8_decode($row['nombre']), 1);
-            $this->Cell($ancho_columna, 10, $row['asiento'], 1);
-            $this->Cell($ancho_columna, 10, utf8_decode($row['origen']), 1);
-            $this->Cell($ancho_columna, 10, utf8_decode($row['destino']), 1);
-            $this->Cell($ancho_columna, 10, $row['fecha_reserva'], 1);
-            $this->Ln();
+            // Cabecera de reservas
+            $this->CabeceraReservas();
+            
+            // Datos de reservas
+            if (!empty($viaje['reservas'])) {
+                $this->SetFont('Arial', '', 10);
+                foreach ($viaje['reservas'] as $reserva) {
+                    $this->Cell(30, 10, utf8_decode($reserva['nombre']), 1);
+                    $this->Cell(30, 10, $reserva['asiento'], 1);
+                    $this->Cell(30, 10, $reserva['reservas_vendidas'], 1);
+                    $this->Cell(30, 10, $reserva['estado'], 1);
+                    $this->Cell(30, 10, $reserva['fecha_reserva'], 1);
+                    $this->Ln();
+                }
+            } else {
+                $this->Cell(0, 10, utf8_decode('No se han hecho reservas para este viaje.'), 0, 1, 'L');
+            }
+            $this->Ln(5);
         }
     }
 
@@ -62,23 +56,38 @@ class PDF extends FPDF {
     }
 }
 
-// Obtener las reservas de la base de datos
-$sql = "SELECT r.id_reserva, c.nombre, r.asiento, rt.origen, rt.destino, r.fecha_reserva, r.estado
-        FROM Reservas r
-        JOIN Clientes c ON r.id_cliente = c.id_cliente
-        JOIN Viajes v ON r.id_viaje = v.id_viaje
-        JOIN Rutas rt ON v.id_ruta = rt.id_ruta";
-$result = $conn->query($sql);
+// Obtener los viajes y las reservas de la base de datos
+$sql = "SELECT v.id_viaje, rt.origen, rt.destino, t.tipo_transporte, t.nombre_transporte
+        FROM Viajes v
+        JOIN Rutas rt ON v.id_ruta = rt.id_ruta
+        JOIN Transportes t ON v.id_transporte = t.id_transporte";
+$result_viajes = $conn->query($sql);
 
-$data = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+$viajes = [];
+if ($result_viajes->num_rows > 0) {
+    while ($row_viaje = $result_viajes->fetch_assoc()) {
+        // Obtener las reservas para este viaje
+        $id_viaje = $row_viaje['id_viaje'];
+        $sql_reservas = "SELECT r.id_reserva, c.nombre, r.asiento, r.fecha_reserva, r.reservas_vendidas, r.estado
+                        FROM Reservas r
+                        JOIN Clientes c ON r.id_cliente = c.id_cliente
+                        WHERE r.id_viaje = $id_viaje";
+        $result_reservas = $conn->query($sql_reservas);
+        
+        $reservas = [];
+        if ($result_reservas->num_rows > 0) {
+            while ($row_reserva = $result_reservas->fetch_assoc()) {
+                $reservas[] = $row_reserva;
+            }
+        }
+
+        $row_viaje['reservas'] = $reservas;
+        $viajes[] = $row_viaje;
     }
 }
 
 $pdf = new PDF();
 $pdf->AddPage();
-$pdf->TablaReservas($data);
+$pdf->TablaReservas($viajes);
 $pdf->Output();
 ?>

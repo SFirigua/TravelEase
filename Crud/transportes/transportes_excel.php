@@ -16,7 +16,7 @@ $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Transportes');
 
 // Encabezados de la tabla en Excel
-$headers = ['Tipo de Transporte', 'Nombre del Transporte', 'N° Asientos', 'Ruta', 'Origen', 'Destino'];
+$headers = ['Tipo de Transporte', 'Nombre del Transporte', 'Capacidad Max.', 'Ruta', 'Origen', 'Destino'];
 $column = 'A';
 
 foreach ($headers as $header) {

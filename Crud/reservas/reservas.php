@@ -20,11 +20,12 @@ if ($pagina_actual < 1) {
 
 $offset = max(0, ($pagina_actual - 1) * $reservas_por_pagina);
 
-$sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, r.fecha_reserva, r.estado, r.asiento, r.reservas_vendidas
+$sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, r.fecha_reserva, r.estado, r.asiento, r.reservas_vendidas, t.tipo_transporte
         FROM Reservas r
         JOIN Clientes c ON r.id_cliente = c.id_cliente
         JOIN Viajes v ON r.id_viaje = v.id_viaje
         JOIN Rutas rt ON v.id_ruta = rt.id_ruta
+        JOIN Transportes t ON v.id_transporte = t.id_transporte
         LIMIT $offset, $reservas_por_pagina";
 $result = $conn->query($sql);
 ?>
@@ -59,6 +60,7 @@ $result = $conn->query($sql);
                 <tr>
                     <th>Cliente</th>
                     <th>Asiento</th> 
+                    <th>Transporte</th>
                     <th>Origen</th>
                     <th>Destino</th>
                     <th>Fecha Reserva</th>
@@ -73,6 +75,7 @@ $result = $conn->query($sql);
                         <tr>
                             <td><?php echo $row['nombre']; ?></td>
                             <td><?php echo $row['asiento']; ?></td>
+                            <td><?php echo $row['tipo_transporte']; ?></td>
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>
                             <td><?php echo $row['fecha_reserva']; ?></td>

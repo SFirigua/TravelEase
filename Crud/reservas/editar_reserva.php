@@ -10,7 +10,12 @@ $reserva = $conn->query($sql)->fetch_assoc();
 
 // Obtener clientes y viajes para los select
 $clientes = $conn->query("SELECT * FROM Clientes");
-$viajes = $conn->query("SELECT v.id_viaje, rt.origen, rt.destino FROM Viajes v JOIN Rutas rt ON v.id_ruta = rt.id_ruta");
+$viajes = $conn->query("
+    SELECT v.id_viaje, t.tipo_transporte, rt.origen, rt.destino
+    FROM Viajes v
+    JOIN Rutas rt ON v.id_ruta = rt.id_ruta
+    JOIN Transportes t ON v.id_transporte = t.id_transporte
+");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_cliente = $_POST['id_cliente'];
@@ -53,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="mb-3">
                 <label for="id_viaje" class="form-label">Viaje</label>
                 <select id="id_viaje" name="id_viaje" class="form-select" required>
-                    <option value="">Selecciona un Viaje</option>
+                    <option value="" disabled selected>Selecciona un Viaje</option>
                     <?php while ($row = $viajes->fetch_assoc()): ?>
                         <option value="<?php echo $row['id_viaje']; ?>" <?php echo ($row['id_viaje'] == $reserva['id_viaje']) ? 'selected' : ''; ?>>
-                            <?php echo $row['origen'] . ' a ' . $row['destino']; ?>
+                            <?php echo $row['tipo_transporte'] . ' - ' . $row['origen'] . ' a ' . $row['destino']; ?>
                         </option>
                     <?php endwhile; ?>
                 </select>

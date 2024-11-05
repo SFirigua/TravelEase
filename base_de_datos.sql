@@ -17,7 +17,7 @@ CREATE TABLE Clientes (
     primer_apellido VARCHAR(100),
     segundo_apellido VARCHAR(100),
     tipo_identificacion ENUM('Cédula de Ciudadanía', 'Cédula de Extranjería') NOT NULL,
-    numero_identificacion VARCHAR(20) NOT NULL UNIQUE;
+    numero_identificacion VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     numero_celular VARCHAR(15),
     direccion VARCHAR(255),
@@ -52,10 +52,14 @@ CREATE TABLE Reservas (
     id_reserva INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT,
     id_viaje INT,
+    id_ruta INT,
+    id_transporte INT,
     fecha_reserva DATE NOT NULL,
     reservas_vendidas INT NOT NULL,
     asiento ENUM('Economica', 'Premium', 'Ejecutiva') NOT NULL,
     estado ENUM('Pendiente', 'Confirmada', 'Cancelada') DEFAULT 'Pendiente',
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
     FOREIGN KEY (id_viaje) REFERENCES Viajes(id_viaje)
+    FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta),
+    FOREIGN KEY (id_transporte) REFERENCES Transportes(id_transporte)
 );

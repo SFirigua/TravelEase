@@ -15,59 +15,88 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Reservas');
 
-// Encabezados de la tabla en Excel
-$headers = ['Cliente', 'Asiento', 'Origen', 'Destino', 'Fecha Reserva', 'Estado'];
-$column = 'A';
-
-foreach ($headers as $header) {
-    $sheet->setCellValue($column . '1', $header);
-    $column++;
-}
-
-// Aplicar estilo a los encabezados
-$headerStyle = [
-    'font' => [
-        'bold' => true,
-        'color' => ['argb' => Color::COLOR_WHITE],
-    ],
-    'fill' => [
-        'fillType' => Fill::FILL_SOLID,
-        'startColor' => ['argb' => 'FF0070C0'], // Color de fondo
-    ],
-    'alignment' => [
-        'horizontal' => Alignment::HORIZONTAL_CENTER,
-    ],
-];
-
-$sheet->getStyle('A1:F1')->applyFromArray($headerStyle);
-
-// Obtener las reservas de la base de datos
-$sql = "SELECT c.nombre AS cliente, r.asiento, rt.origen, rt.destino, r.fecha_reserva, r.estado
-        FROM Reservas r
-        JOIN Clientes c ON r.id_cliente = c.id_cliente
-        JOIN Viajes v ON r.id_viaje = v.id_viaje
-        JOIN Rutas rt ON v.id_ruta = rt.id_ruta";
-$result = $conn->query($sql);
+// Obtener los viajes y las reservas de la base de datos
+$sql = "SELECT v.id_viaje, rt.origen, rt.destino, t.tipo_transporte, t.nombre_transporte
+        FROM Viajes v
+        JOIN Rutas rt ON v.id_ruta = rt.id_ruta
+        JOIN Transportes t ON v.id_transporte = t.id_transporte";
+$result_viajes = $conn->query($sql);
 
 // Llenar los datos en la hoja de cálculo
-$rowNum = 2;
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $sheet->setCellValue('A' . $rowNum, $row['cliente']);
-        $sheet->setCellValue('B' . $rowNum, $row['asiento']);
-        $sheet->setCellValue('C' . $rowNum, $row['origen']);
-        $sheet->setCellValue('D' . $rowNum, $row['destino']);
-        $sheet->setCellValue('E' . $rowNum, $row['fecha_reserva']);
-        $sheet->setCellValue('F' . $rowNum, $row['estado']);
+$rowNum = 1; // Cambiar a 1 para incluir encabezados después
+if ($result_viajes->num_rows > 0) {
+    while ($row_viaje = $result_viajes->fetch_assoc()) {
+        // Obtener las reservas para este viaje
+        $id_viaje = $row_viaje['id_viaje'];
+        $sql_reservas = "SELECT c.nombre AS cliente, r.asiento, r.fecha_reserva, r.estado, r.reservas_vendidas
+                        FROM Reservas r
+                        JOIN Clientes c ON r.id_cliente = c.id_cliente
+                        WHERE r.id_viaje = $id_viaje";
+        $result_reservas = $conn->query($sql_reservas);
         
-        // Aplicar alineación centrada a cada fila de datos
-        $sheet->getStyle('A' . $rowNum . ':F' . $rowNum)->applyFromArray([
+        // Encabezado del viaje
+        $viajeTexto = 'Viaje: ' . $row_viaje['origen'] . ' a ' . $row_viaje['destino'] . ' - Transporte: ' . $row_viaje['tipo_transporte'] . ' ' . $row_viaje['nombre_transporte'];
+        $sheet->setCellValue('A' . $rowNum, $viajeTexto);
+        $sheet->mergeCells('A' . $rowNum . ':E' . $rowNum); // Merge cells for the travel header
+        $sheet->getStyle('A' . $rowNum)->applyFromArray([
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT],
+            'font' => ['bold' => true]
+        ]);
+        $rowNum++;
+
+        // Definir los encabezados de la tabla en Excel
+        $headers = ['Cliente', 'Asiento', 'N° Asientos', 'Fecha Reserva', 'Estado'];
+        $column = 'A';
+
+        foreach ($headers as $header) {
+            $sheet->setCellValue($column . $rowNum, $header);
+            $column++;
+        }
+
+        // Aplicar estilo a los encabezados
+        $headerStyle = [
+            'font' => [
+                'bold' => true,
+                'color' => ['argb' => Color::COLOR_WHITE],
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['argb' => 'FF0070C0'], // Color de fondo
+            ],
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
             ],
-        ]);
-        
+        ];
+
+        $sheet->getStyle('A' . $rowNum . ':E' . $rowNum)->applyFromArray($headerStyle);
         $rowNum++;
+
+        // Si hay reservas
+        if ($result_reservas->num_rows > 0) {
+            while ($row_reserva = $result_reservas->fetch_assoc()) {
+                $sheet->setCellValue('A' . $rowNum, $row_reserva['cliente']);
+                $sheet->setCellValue('B' . $rowNum, $row_reserva['asiento']);
+                $sheet->setCellValue('C' . $rowNum, $row_reserva['reservas_vendidas']);
+                $sheet->setCellValue('D' . $rowNum, $row_reserva['fecha_reserva']);
+                $sheet->setCellValue('E' . $rowNum, $row_reserva['estado']);
+
+                // Aplicar alineación centrada a cada fila de datos
+                $sheet->getStyle('B' . $rowNum . ':E' . $rowNum)->applyFromArray([
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                    ],
+                ]);
+                $rowNum++;
+            }
+        } else {
+            // Mensaje si no hay reservas
+            $sheet->setCellValue('A' . $rowNum, 'No se han hecho reservas para este viaje.');
+            $sheet->mergeCells('A' . $rowNum . ':E' . $rowNum);
+            $sheet->getStyle('A' . $rowNum)->applyFromArray([
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT],
+            ]);
+            $rowNum++;
+        }
     }
 }
 
@@ -81,10 +110,10 @@ $styleArray = [
     ],
 ];
 
-$sheet->getStyle('A1:F' . ($rowNum - 1))->applyFromArray($styleArray);
+$sheet->getStyle('A1:E' . ($rowNum - 1))->applyFromArray($styleArray);
 
 // Ajustar automáticamente el ancho de las columnas
-foreach (range('A', 'F') as $columnID) {
+foreach (range('A', 'E') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);
 }
 
