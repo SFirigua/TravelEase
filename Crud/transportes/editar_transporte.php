@@ -15,8 +15,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tipo_transporte = $_POST['tipo_transporte'];
     $nombre_transporte = $_POST['nombre_transporte'];
     $num_asientos = $_POST['num_asientos'];
+    $id_ruta = $_POST['id_ruta'];
 
-    $sql = "UPDATE Transportes SET tipo_transporte='$tipo_transporte', nombre_transporte='$nombre_transporte', num_asientos=$num_asientos 
+    // Obtener la duración de la ruta seleccionada
+    $sql_ruta_duracion = "SELECT duracion FROM Rutas WHERE id_ruta = $id_ruta";
+    $result_ruta_duracion = $conn->query($sql_ruta_duracion);
+    $duracion_ruta = $result_ruta_duracion->fetch_assoc();
+
+    // Determinar el tiempo_duracion según el tipo de transporte
+    switch ($tipo_transporte) {
+        case 'Avión':
+            // Convierte la duración a segundos y divide por 2
+            $segundos = strtotime($duracion_ruta['duracion']) - strtotime('TODAY');
+            $tiempo_duracion = date('H:i', strtotime('TODAY') + ($segundos / 2));
+            break;
+        case 'Tren':
+            // El tren toma la misma duración de la ruta
+            $tiempo_duracion = $duracion_ruta['duracion'];
+            break;
+        case 'Autobús':
+            // El autobús tarda el doble de la duración de la ruta
+            $segundos = strtotime($duracion_ruta['duracion']) - strtotime('TODAY');
+            $tiempo_duracion = date('H:i', strtotime('TODAY') + ($segundos * 2));
+            break;
+        default:
+            $tiempo_duracion = $duracion_ruta['duracion'];
+            break;
+    }
+
+    // Actualizar el transporte con el tiempo de duración calculado
+    $sql = "UPDATE Transportes SET tipo_transporte='$tipo_transporte', nombre_transporte='$nombre_transporte', 
+            num_asientos=$num_asientos, id_ruta=$id_ruta, tiempo_duracion='$tiempo_duracion' 
             WHERE id_transporte = $id_transporte";
     
     if ($conn->query($sql) === TRUE) {
@@ -36,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Editar Transporte</h2>
         <form method="POST">
             <div class="mb-3">
-                <label for="tipo_transporte" class="form-label">Tipo de Transporte</label>
+                <label for="tipo_transporte" class="form-label">Transporte</label>
                 <select class="form-select" id="tipo_transporte" name="tipo_transporte" required>
                     <option value="Avión" <?php echo ($transporte['tipo_transporte'] == 'Avión') ? 'selected' : ''; ?>>Avión</option>
                     <option value="Tren" <?php echo ($transporte['tipo_transporte'] == 'Tren') ? 'selected' : ''; ?>>Tren</option>
@@ -44,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </select>
             </div>
             <div class="mb-3">
-                <label for="nombre_transporte" class="form-label">Nombre del Transporte</label>
+                <label for="nombre_transporte" class="form-label">Marca</label>
                 <input type="text" class="form-control" id="nombre_transporte" name="nombre_transporte" value="<?php echo $transporte['nombre_transporte']; ?>" required>
             </div>
             <div class="mb-3">

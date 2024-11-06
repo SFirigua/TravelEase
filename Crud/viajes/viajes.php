@@ -21,7 +21,7 @@ if ($pagina_actual < 1) {
 $offset = max(0, ($pagina_actual - 1) * $viajes_por_pagina);
 
 $sql = "SELECT V.*, 
-               T.nombre_transporte, 
+               T.tipo_transporte, 
                R.origen, 
                R.destino,
                DATE_FORMAT(V.fecha_salida, '%Y-%m-%d') AS fecha_salida,
@@ -79,7 +79,7 @@ $result = $conn->query($sql);
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo $row['nombre_transporte']; ?></td>
+                            <td><?php echo $row['tipo_transporte']; ?></td>
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>
                             <td><?php echo $row['fecha_salida']; ?></td>

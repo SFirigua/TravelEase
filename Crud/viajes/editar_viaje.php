@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
                         <option value="<?php echo $transporte['id_transporte']; ?>" 
                         <?php echo ($transporte['id_transporte'] == $viaje['id_transporte']) ? 'selected' : ''; ?>>
-                            <?php echo $transporte['nombre_transporte'] . ' - Ruta: ' . $transporte['origen'] . ' a ' . $transporte['destino']; ?>
+                            <?php echo $transporte['tipo_transporte'] . ' - Ruta: ' . $transporte['origen'] . ' a ' . $transporte['destino']; ?>
                         </option>
                     <?php endwhile; ?>
                 </select>
@@ -67,19 +67,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="mb-3">
                 <label for="fecha_salida" class="form-label">Fecha Salida</label>
-                <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" value="<?php echo $viaje['fecha_salida']; ?>" required>
+                <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" value="<?php echo $viaje['fecha_salida']; ?>" 
+                min="<?php echo date('Y-m-d'); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="hora_salida" class="form-label">Hora Salida</label>
                 <input type="time" class="form-control" id="hora_salida" name="hora_salida" value="<?php echo $viaje['hora_salida']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="fecha_llegada" class="form-label">Fecha Llegada</label>
-                <input type="date" class="form-control" id="fecha_llegada" name="fecha_llegada" value="<?php echo $viaje['fecha_llegada']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="hora_llegada" class="form-label">Hora Llegada</label>
-                <input type="time" class="form-control" id="hora_llegada" name="hora_llegada" value="<?php echo $viaje['hora_llegada']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="precio" class="form-label">Precio</label>

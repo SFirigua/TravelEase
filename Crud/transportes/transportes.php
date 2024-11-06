@@ -56,9 +56,10 @@ $result = $conn->query($sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>Tipo de Transporte</th>
-                    <th>Nombre del Transporte</th>
+                    <th>Transporte</th>
+                    <th>Marca</th>
                     <th>Capacidad Max.</th>
+                    <th>Duración Viaje</th>
                     <th>Ruta</th>
                     <th>Origen</th>
                     <th>Destino</th>
@@ -72,6 +73,7 @@ $result = $conn->query($sql);
                             <td><?php echo $row['tipo_transporte']; ?></td>
                             <td><?php echo $row['nombre_transporte']; ?></td>
                             <td><?php echo $row['num_asientos']; ?></td>
+                            <td><?php echo $row['tiempo_duracion']; ?></td>
                             <td><?php echo $row['nombre_ruta']; ?></td>
                             <td><?php echo $row['origen']; ?></td>
                             <td><?php echo $row['destino']; ?></td>

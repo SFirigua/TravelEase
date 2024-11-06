@@ -31,6 +31,7 @@ CREATE TABLE Transportes (
     tipo_transporte ENUM('Avión', 'Tren', 'Autobús') NOT NULL,
     nombre_transporte VARCHAR(100) NOT NULL,
     num_asientos INT NOT NULL,
+    tiempo_duracion TIME NOT NULL,
     FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta)
 );
 

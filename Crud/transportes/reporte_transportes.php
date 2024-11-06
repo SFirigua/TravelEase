@@ -24,8 +24,8 @@ class PDF extends FPDF {
         $this->SetX($pos_x);
 
         // Crear las celdas
-        $this->Cell($ancho_columna, 10, utf8_decode('Tipo Transporte'), 1);
-        $this->Cell($ancho_columna, 10, utf8_decode('Nombre Trasnp.'), 1);
+        $this->Cell($ancho_columna, 10, utf8_decode('Transporte'), 1);
+        $this->Cell($ancho_columna, 10, utf8_decode('Marca'), 1);
         $this->Cell($ancho_columna, 10, utf8_decode('Capacidad Max.'), 1);
         $this->Cell($ancho_columna, 10, utf8_decode('Ruta'), 1);
         $this->Cell($ancho_columna, 10, utf8_decode('Origen'), 1);

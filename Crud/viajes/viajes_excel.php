@@ -42,7 +42,7 @@ $headerStyle = [
 $sheet->getStyle('A1:I1')->applyFromArray($headerStyle);
 
 // Obtener los viajes de la base de datos
-$sql = "SELECT T.nombre_transporte, R.origen, R.destino, V.fecha_salida, V.hora_salida, V.fecha_llegada, V.hora_llegada, V.precio, V.estado
+$sql = "SELECT T.tipo_transporte, R.origen, R.destino, V.fecha_salida, V.hora_salida, V.fecha_llegada, V.hora_llegada, V.precio, V.estado
         FROM Viajes V
         JOIN Transportes T ON V.id_transporte = T.id_transporte
         JOIN Rutas R ON V.id_ruta = R.id_ruta";
@@ -52,7 +52,7 @@ $result = $conn->query($sql);
 $rowNum = 2;
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $sheet->setCellValue('A' . $rowNum, $row['nombre_transporte']);
+        $sheet->setCellValue('A' . $rowNum, $row['tipo_transporte']);
         $sheet->setCellValue('B' . $rowNum, $row['origen']);
         $sheet->setCellValue('C' . $rowNum, $row['destino']);
         $sheet->setCellValue('D' . $rowNum, $row['fecha_salida']);

@@ -10,17 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $resultViajes = $conn->query($checkViajes);
     $rowViajes = $resultViajes->fetch_assoc();
 
-    // Verificar si el transporte está en uso en la tabla Transportes (si pertenece a una Ruta)
-    $checkRutas = "SELECT COUNT(*) AS total FROM Transportes WHERE id_transporte = $id_transporte AND id_ruta IS NOT NULL";
-    $resultRutas = $conn->query($checkRutas);
-    $rowRutas = $resultRutas->fetch_assoc();
-
     if ($rowViajes['total'] > 0) {
         $_SESSION['error'] = "No puedes eliminar este transporte porque está asociado a uno o más viajes.";
-        header("Location: /TravelEase/crud/transportes/transportes.php");
-        exit();
-    } elseif ($rowRutas['total'] > 0) {
-        $_SESSION['error'] = "No puedes eliminar este transporte porque está asociado a una ruta.";
         header("Location: /TravelEase/crud/transportes/transportes.php");
         exit();
     } else {

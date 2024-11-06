@@ -49,7 +49,7 @@ class PDF extends FPDF {
         foreach ($data as $row) {
             // Establecer la posición X
             $this->SetX($pos_x);
-            $this->Cell($ancho_columna, 10, utf8_decode($row['nombre_transporte']), 1);
+            $this->Cell($ancho_columna, 10, utf8_decode($row['tipo_transporte']), 1);
             $this->Cell($ancho_columna, 10, utf8_decode($row['origen']), 1);
             $this->Cell($ancho_columna, 10, utf8_decode($row['destino']), 1);
             $this->Cell($ancho_columna, 10, $row['fecha_salida'], 1);
@@ -70,7 +70,7 @@ class PDF extends FPDF {
 
 // Obtener los viajes de la base de datos
 $sql = "SELECT V.*, 
-               T.nombre_transporte, 
+               T.tipo_transporte, 
                R.origen, 
                R.destino,
                DATE_FORMAT(V.fecha_salida, '%Y-%m-%d') AS fecha_salida,
