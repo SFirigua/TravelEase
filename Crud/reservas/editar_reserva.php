@@ -25,11 +25,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $reservas_vendidas = $_POST['reservas_vendidas'];
     $estado = $_POST['estado'];
 
+    // Obtener capacidad máxima y reservas actuales
+    $query = "
+        SELECT t.num_asientos AS capacidad_maxima, 
+               COALESCE(SUM(r.reservas_vendidas), 0) AS reservas_actuales 
+        FROM Transportes t
+        JOIN Viajes v ON t.id_transporte = v.id_transporte
+        LEFT JOIN Reservas r ON r.id_viaje = v.id_viaje
+        WHERE v.id_viaje = '$id_viaje'
+        GROUP BY t.num_asientos";
+    $result = $conn->query($query);
+    $datos_viaje = $result->fetch_assoc();
+
+    $capacidad_maxima = $datos_viaje['capacidad_maxima'];
+    $reservas_actuales = $datos_viaje['reservas_actuales'];
+
+    // Verificar si el cambio en la reserva excede la capacidad
+    $nuevas_reservas_total = $reservas_actuales - $reserva['reservas_vendidas'] + $reservas_vendidas;
+    if ($nuevas_reservas_total > $capacidad_maxima) {
+        $_SESSION['error'] = "Error: La cantidad de asientos solicitada excede la capacidad máxima disponible. 
+                             Quedan " . ($capacidad_maxima - $reservas_actuales + $reserva['reservas_vendidas']) . " asientos disponibles.";
+        header("Location: /TravelEase/crud/reservas/editar_reserva.php?id=$id_reserva");
+        exit();
+    }
+
+    // Actualizar la reserva si los asientos están disponibles
     $sql = "UPDATE Reservas SET id_cliente='$id_cliente', id_viaje='$id_viaje', fecha_reserva='$fecha_reserva', reservas_vendidas='$reservas_vendidas', estado='$estado', asiento='$asiento' 
             WHERE id_reserva = $id_reserva";
     
     if ($conn->query($sql) === TRUE) {
-        $_SESSION['success'] = "Reserva actualizada con exito.";
+        $_SESSION['success'] = "Reserva actualizada con éxito.";
         header("Location: /TravelEase/crud/reservas/reservas.php");
         exit();
     } else {
@@ -43,6 +68,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
     <div class="container mt-5">
         <h2>Editar Reserva</h2>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <?php
+                echo $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Mostrar mensaje de éxito -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <?php
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);
+                ?>
+            </div>
+        <?php endif; ?>
+        
         <form method="POST">
             <div class="mb-3">
                 <label for="id_cliente" class="form-label">Cliente</label>

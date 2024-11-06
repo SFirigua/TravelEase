@@ -11,11 +11,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $reservas_vendidas = $_POST['reservas_vendidas'];
     $estado = $_POST['estado'];
 
+    // Consultar la capacidad máxima del transporte y las reservas actuales
+    $query = "
+        SELECT t.num_asientos AS capacidad_maxima, 
+               SUM(r.reservas_vendidas) AS reservas_actuales 
+        FROM Transportes t
+        JOIN Viajes v ON t.id_transporte = v.id_transporte
+        LEFT JOIN Reservas r ON r.id_viaje = v.id_viaje
+        WHERE v.id_viaje = '$id_viaje'
+        GROUP BY t.num_asientos";
+        
+    $result = $conn->query($query);
+    $row = $result->fetch_assoc();
+    
+    if ($row) {
+        $capacidad_maxima = $row['capacidad_maxima'];
+        $reservas_actuales = $row['reservas_actuales'] ?? 0; // Puede ser null si no hay reservas
+        $asientos_disponibles = $capacidad_maxima - $reservas_actuales;
+        
+        // Validar si el número de asientos solicitados supera la capacidad
+        if ($reservas_vendidas > $asientos_disponibles) {
+            $_SESSION['error'] = "Error: Solo quedan $asientos_disponibles asientos disponibles.";
+            header("Location: /TravelEase/crud/reservas/agregar_reserva.php");
+            exit();
+        }
+    }
+
+    // Insertar la nueva reserva si pasa la validación
     $sql = "INSERT INTO Reservas (id_cliente, id_viaje, fecha_reserva, reservas_vendidas, estado, asiento) 
             VALUES ('$id_cliente', '$id_viaje', '$fecha_reserva', '$reservas_vendidas', '$estado', '$asiento')";
     
     if ($conn->query($sql) === TRUE) {
-        $_SESSION['success'] = "Reserva agregada con exito.";
+        $_SESSION['success'] = "Reserva agregada con éxito.";
         header("Location: /TravelEase/crud/reservas/reservas.php");
         exit();
     } else {
@@ -35,9 +62,30 @@ $viajes = $conn->query("
 ");
 ?>
 
+
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
     <div class="container mt-5">
         <h2>Agregar Reserva</h2>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <?php
+                echo $_SESSION['error'];
+                unset($_SESSION['error']);
+                ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Mostrar mensaje de éxito -->
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <?php
+                echo $_SESSION['success'];
+                unset($_SESSION['success']);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <form method="POST">
             <div class="mb-3">
                 <label for="id_cliente" class="form-label">Cliente</label>
