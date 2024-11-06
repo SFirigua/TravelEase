@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
@@ -20,13 +21,16 @@ if ($pagina_actual < 1) {
 
 $offset = max(0, ($pagina_actual - 1) * $reservas_por_pagina);
 
-$sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, r.fecha_reserva, r.estado, r.asiento, r.reservas_vendidas, t.tipo_transporte
+$sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, 
+        DATE_FORMAT(r.fecha_reserva, '%Y-%m-%d %H:%i') as fecha_reserva, 
+        r.estado, r.asiento, r.reservas_vendidas, t.tipo_transporte
         FROM Reservas r
         JOIN Clientes c ON r.id_cliente = c.id_cliente
         JOIN Viajes v ON r.id_viaje = v.id_viaje
         JOIN Rutas rt ON v.id_ruta = rt.id_ruta
         JOIN Transportes t ON v.id_transporte = t.id_transporte
         LIMIT $offset, $reservas_por_pagina";
+
 $result = $conn->query($sql);
 ?>
 

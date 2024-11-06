@@ -54,7 +54,7 @@ CREATE TABLE Reservas (
     id_viaje INT,
     id_ruta INT,
     id_transporte INT,
-    fecha_reserva DATE NOT NULL,
+    fecha_reserva DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
     reservas_vendidas INT NOT NULL,
     asiento ENUM('Economica', 'Premium', 'Ejecutiva') NOT NULL,
     estado ENUM('Pendiente', 'Confirmada', 'Cancelada') DEFAULT 'Pendiente',

@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 $id_reserva = $_GET['id'];
@@ -24,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fecha_reserva = $_POST['fecha_reserva'];
     $reservas_vendidas = $_POST['reservas_vendidas'];
     $estado = $_POST['estado'];
+
+    $fecha_reserva = date('Y-m-d H:i:s');
 
     // Obtener capacidad máxima y reservas actuales
     $query = "
@@ -118,10 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <option value="Premium" <?php echo ($reserva['asiento'] == 'Premium') ? 'selected' : ''; ?>>Premium</option>
                     <option value="Ejecutiva" <?php echo ($reserva['asiento'] == 'Ejecutiva') ? 'selected' : ''; ?>>Ejecutiva</option>
                 </select>
-            </div>
-            <div class="mb-3">
-                <label for="fecha_reserva" class="form-label">Fecha de Reserva</label>
-                <input type="date" class="form-control" id="fecha_reserva" name="fecha_reserva" value="<?php echo $reserva['fecha_reserva']; ?>" required>
             </div>
             <div class="mb-3">
                 <label for="reservas_vendidas" class="form-label">N° Asientos</label>

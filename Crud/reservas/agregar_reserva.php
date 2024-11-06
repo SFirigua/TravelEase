@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Insertar la nueva reserva si pasa la validación
-    $sql = "INSERT INTO Reservas (id_cliente, id_viaje, fecha_reserva, reservas_vendidas, estado, asiento) 
-            VALUES ('$id_cliente', '$id_viaje', '$fecha_reserva', '$reservas_vendidas', '$estado', '$asiento')";
+    $sql = "INSERT INTO Reservas (id_cliente, id_viaje, reservas_vendidas, estado, asiento) 
+            VALUES ('$id_cliente', '$id_viaje', '$reservas_vendidas', '$estado', '$asiento')";
     
     if ($conn->query($sql) === TRUE) {
         $_SESSION['success'] = "Reserva agregada con éxito.";
@@ -115,10 +115,6 @@ $viajes = $conn->query("
                         </option>
                     <?php endwhile; ?>
                 </select>
-            </div>
-            <div class="mb-3">
-                <label for="fecha_reserva" class="form-label">Fecha de Reserva</label>
-                <input type="date" class="form-control" id="fecha_reserva" name="fecha_reserva" required>
             </div>
             <div class="mb-3">
                 <label for="reservas_vendidas" class="form-label">N° Asientos</label>
