@@ -20,11 +20,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_transporte = $_POST['id_transporte'];
     $fecha_salida = $_POST['fecha_salida'];
     $hora_salida = $_POST['hora_salida'];
-    $fecha_llegada = $_POST['fecha_llegada'];
-    $hora_llegada = $_POST['hora_llegada'];
     $precio = $_POST['precio'];
     $estado = $_POST['estado'];
 
+    // Obtener la duración del transporte seleccionado
+    $sql_duracion = "SELECT tiempo_duracion FROM Transportes WHERE id_transporte = $id_transporte";
+    $result_duracion = $conn->query($sql_duracion);
+    $duracion = $result_duracion->fetch_assoc()['tiempo_duracion'];
+
+    // Convertir fecha y hora de salida a un formato manejable
+    $fecha_hora_salida = new DateTime("$fecha_salida $hora_salida");
+    
+    // Añadir la duración
+    $interval = new DateInterval('PT' . explode(":", $duracion)[0] . 'H' . explode(":", $duracion)[1] . 'M');
+    $fecha_hora_salida->add($interval);
+
+    // Separar fecha y hora de llegada
+    $fecha_llegada = $fecha_hora_salida->format('Y-m-d');
+    $hora_llegada = $fecha_hora_salida->format('H:i:s');
+
+    // Actualizar el viaje en la base de datos
     $sql = "UPDATE Viajes SET id_transporte='$id_transporte', 
             fecha_salida='$fecha_salida', hora_salida='$hora_salida', 
             fecha_llegada='$fecha_llegada', hora_llegada='$hora_llegada', 
