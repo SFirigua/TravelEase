@@ -28,7 +28,9 @@ if ($result_viajes->num_rows > 0) {
     while ($row_viaje = $result_viajes->fetch_assoc()) {
         // Obtener las reservas para este viaje
         $id_viaje = $row_viaje['id_viaje'];
-        $sql_reservas = "SELECT c.nombre AS cliente, r.asiento, r.fecha_reserva, r.estado, r.reservas_vendidas
+        $sql_reservas = "SELECT c.nombre AS cliente, r.asiento, 
+        DATE_FORMAT(r.fecha_reserva, '%Y-%m-%d %H:%i') as fecha_reserva, 
+         r.estado, r.reservas_vendidas
                         FROM Reservas r
                         JOIN Clientes c ON r.id_cliente = c.id_cliente
                         WHERE r.id_viaje = $id_viaje";
