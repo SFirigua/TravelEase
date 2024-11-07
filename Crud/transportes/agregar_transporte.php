@@ -59,39 +59,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container mt-5">
         <h2>Agregar Transporte</h2>
         <form method="POST">
-            <div class="mb-3">
-                <label for="tipo_transporte" class="form-label">Transporte</label>
-                <select class="form-select" id="tipo_transporte" name="tipo_transporte" required>
-                    <option value="" disabled selected>Seleccione un tipo</option>
-                    <option value="Avión">Avión</option>
-                    <option value="Tren">Tren</option>
-                    <option value="Autobús">Autobús</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="nombre_transporte" class="form-label">Marca</label>
-                <input type="text" class="form-control" id="nombre_transporte" name="nombre_transporte" required>
-            </div>
-            <div class="mb-3">
-                <label for="id_ruta" class="form-label">Ruta</label>
-                <select class="form-select" id="id_ruta" name="id_ruta" required>
-                    <option value="">Seleccione una ruta</option>
-                    <?php if ($result_rutas->num_rows > 0): ?>
-                    <?php while ($row = $result_rutas->fetch_assoc()): ?>
-                    <option value="<?php echo $row['id_ruta']; ?>"><?php echo $row['nombre_ruta'] . ' Duración : ' . $row['duracion'];?></option>
-                    <?php endwhile; ?>
-                    <?php else: ?>
-                    <option value="">No hay rutas disponibles</option>
-                    <?php endif; ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="num_asientos" class="form-label">Capacidad Maxima</label>
-                <input type="number" class="form-control" id="num_asientos" name="num_asientos" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Agregar Transporte</button>
-            <a href="transportes.php" class="btn btn-secondary">Cancelar</a>
-        </form>
+    <div class="mb-3">
+        <label for="tipo_transporte" class="form-label">Transporte</label>
+        <select class="form-select" id="tipo_transporte" name="tipo_transporte" required>
+            <option value="" disabled selected>Seleccione un tipo</option>
+            <option value="Avión">Avión</option>
+            <option value="Tren">Tren</option>
+            <option value="Autobús">Autobús</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="nombre_transporte" class="form-label">Marca</label>
+        <input type="text" class="form-control" id="nombre_transporte" name="nombre_transporte" required
+               pattern="^[A-Za-z0-9\s\-]{2,50}$" 
+               title="La marca debe tener entre 2 y 50 caracteres y solo puede contener letras, números, guiones y espacios.">
+    </div>
+    <div class="mb-3">
+        <label for="id_ruta" class="form-label">Ruta</label>
+        <select class="form-select" id="id_ruta" name="id_ruta" required>
+            <option value="">Seleccione una ruta</option>
+            <?php if ($result_rutas->num_rows > 0): ?>
+                <?php while ($row = $result_rutas->fetch_assoc()): ?>
+                    <option value="<?php echo $row['id_ruta']; ?>">
+                        <?php echo $row['nombre_ruta'] . ' Duración : ' . $row['duracion']; ?>
+                    </option>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <option value="">No hay rutas disponibles</option>
+            <?php endif; ?>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="num_asientos" class="form-label">Capacidad Máxima</label>
+        <input type="number" class="form-control" id="num_asientos" name="num_asientos" required
+               min="1" max="500" 
+               title="La capacidad máxima debe ser un número entre 1 y 500.">
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Transporte</button>
+    <a href="transportes.php" class="btn btn-secondary">Cancelar</a>
+</form>
+
     </div>
 </main>
 

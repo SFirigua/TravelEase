@@ -88,51 +88,54 @@ $viajes = $conn->query("
         <?php endif; ?>
 
         <form method="POST">
-            <div class="mb-3">
-                <label for="id_cliente" class="form-label">Cliente</label>
-                <select id="id_cliente" name="id_cliente" class="form-select" required>
-                    <option value="" disabled selected>Selecciona un cliente</option>
-                    <?php while ($row = $clientes->fetch_assoc()): ?>
-                        <option value="<?php echo $row['id_cliente']; ?>"><?php echo $row['nombre']; ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="asiento">Asiento:</label>
-                <select name="asiento" id="asiento" class="form-control">
-                    <option value="" disabled selected>seleccione una clase</option>
-                    <option value="Economica">Económica</option>
-                    <option value="Premium">Premium</option>
-                    <option value="Ejecutiva">Ejecutiva</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="id_viaje" class="form-label">Viaje</label>
-                <select id="id_viaje" name="id_viaje" class="form-select" required>
-                    <option value="" disabled selected>Selecciona un Viaje</option>
-                    <?php while ($row = $viajes->fetch_assoc()): ?>
-                        <option value="<?php echo $row['id_viaje']; ?>">
-                            <?php echo $row['tipo_transporte'] . ' - ' . $row['origen'] . ' a ' . $row['destino']; ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="reservas_vendidas" class="form-label">N° Asientos</label>
-                <input type="number" class="form-control" id="reservas_vendidas" name="reservas_vendidas" required>
-            </div>
-            <div class="mb-3">
-                <label for="estado" class="form-label">Estado</label>
-                <select id="estado" name="estado" class="form-select" required>
-                    <option value="" disabled selected>Selecciona un estado</option>
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Confirmada">Confirmada</option>
-                    <option value="Cancelada">Cancelada</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Agregar Reserva</button>
-            <a href="reservas.php" class="btn btn-secondary">Cancelar</a>
-        </form>
+    <div class="mb-3">
+        <label for="id_cliente" class="form-label">Cliente</label>
+        <select id="id_cliente" name="id_cliente" class="form-select" required>
+            <option value="" disabled selected>Selecciona un cliente</option>
+            <?php while ($row = $clientes->fetch_assoc()): ?>
+                <option value="<?php echo $row['id_cliente']; ?>"><?php echo $row['nombre']; ?></option>
+            <?php endwhile; ?>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="asiento">Asiento:</label>
+        <select name="asiento" id="asiento" class="form-control" required>
+            <option value="" disabled selected>Seleccione una clase</option>
+            <option value="Economica">Económica</option>
+            <option value="Premium">Premium</option>
+            <option value="Ejecutiva">Ejecutiva</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id_viaje" class="form-label">Viaje</label>
+        <select id="id_viaje" name="id_viaje" class="form-select" required>
+            <option value="" disabled selected>Selecciona un viaje</option>
+            <?php while ($row = $viajes->fetch_assoc()): ?>
+                <option value="<?php echo $row['id_viaje']; ?>">
+                    <?php echo $row['tipo_transporte'] . ' - ' . $row['origen'] . ' a ' . $row['destino']; ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="reservas_vendidas" class="form-label">N° Asientos</label>
+        <input type="number" class="form-control" id="reservas_vendidas" name="reservas_vendidas" required 
+               min="1" max="10" 
+               title="El número de asientos debe estar entre 1 y 10.">
+    </div>
+    <div class="mb-3">
+        <label for="estado" class="form-label">Estado</label>
+        <select id="estado" name="estado" class="form-select" required>
+            <option value="" disabled selected>Selecciona un estado</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Confirmada">Confirmada</option>
+            <option value="Cancelada">Cancelada</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Reserva</button>
+    <a href="reservas.php" class="btn btn-secondary">Cancelar</a>
+</form>
+
     </div>
 </main>
 

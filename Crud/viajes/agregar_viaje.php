@@ -60,43 +60,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container mt-5">
         <h2>Agregar Viaje</h2>
         <form method="POST">
-            <div class="mb-3">
-                <label for="id_transporte" class="form-label">Transporte</label>
-                <select class="form-select" id="id_transporte" name="id_transporte" required>
-                    <option value="" disabled selected>Seleccione un transporte</option>
-                    <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
-                        <option value="<?php echo $transporte['id_transporte']; ?>">
+    <div class="mb-3">
+        <label for="id_transporte" class="form-label">Transporte</label>
+        <select class="form-select" id="id_transporte" name="id_transporte" required>
+            <option value="" disabled selected>Seleccione un transporte</option>
+            <?php while ($transporte = $result_transportes->fetch_assoc()): ?>
+                <option value="<?php echo $transporte['id_transporte']; ?>">
                     <?php echo $transporte['tipo_transporte'] . ' - Ruta: ' . $transporte['origen'] . ' a ' . $transporte['destino']; ?>
-                    </option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="fecha_salida" class="form-label">Fecha Salida</label>
-                <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" 
-                min="<?php echo date('Y-m-d'); ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="hora_salida" class="form-label">Hora Salida</label>
-                <input type="time" class="form-control" id="hora_salida" name="hora_salida" required>
-            </div>
-            <div class="mb-3">
-                <label for="precio" class="form-label">Precio</label>
-                <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
-            </div>
-            <div class="mb-3">
-                <label for="estado" class="form-label">Estado</label>
-                <select class="form-select" id="estado" name="estado">
-                    <option value="" disabled selected>Seleccione un estado</option>
-                    <option value="Programado">Programado</option>
-                    <option value="Cancelado">Cancelado</option>
-                    <option value="En curso">En curso</option>
-                    <option value="Finalizado">Finalizado</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Agregar Viaje</button>
-            <a href="viajes.php" class="btn btn-secondary">Cancelar</a>
-        </form>
+                </option>
+            <?php endwhile; ?>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="fecha_salida" class="form-label">Fecha Salida</label>
+        <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" 
+               min="<?php echo date('Y-m-d'); ?>" required 
+               title="Seleccione una fecha a partir de hoy.">
+    </div>
+    <div class="mb-3">
+        <label for="hora_salida" class="form-label">Hora Salida</label>
+        <input type="time" class="form-control" id="hora_salida" name="hora_salida" required>
+    </div>
+    <div class="mb-3">
+        <label for="precio" class="form-label">Precio</label>
+        <input type="number" class="form-control" id="precio" name="precio" step="0.01" required
+               min="0" max="100000" 
+               title="Ingrese un precio entre 0 y 100,000.00.">
+    </div>
+    <div class="mb-3">
+        <label for="estado" class="form-label">Estado</label>
+        <select class="form-select" id="estado" name="estado" required>
+            <option value="" disabled selected>Seleccione un estado</option>
+            <option value="Programado">Programado</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="En curso">En curso</option>
+            <option value="Finalizado">Finalizado</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Viaje</button>
+    <a href="viajes.php" class="btn btn-secondary">Cancelar</a>
+</form>
+
     </div>
 </main>
 

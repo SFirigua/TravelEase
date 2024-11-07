@@ -55,12 +55,12 @@ CREATE TABLE Reservas (
     id_viaje INT,
     id_ruta INT,
     id_transporte INT,
-    fecha_reserva DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+    fecha_reserva DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     reservas_vendidas INT NOT NULL,
     asiento ENUM('Economica', 'Premium', 'Ejecutiva') NOT NULL,
     estado ENUM('Pendiente', 'Confirmada', 'Cancelada') DEFAULT 'Pendiente',
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
-    FOREIGN KEY (id_viaje) REFERENCES Viajes(id_viaje)
+    FOREIGN KEY (id_viaje) REFERENCES Viajes(id_viaje),
     FOREIGN KEY (id_ruta) REFERENCES Rutas(id_ruta),
     FOREIGN KEY (id_transporte) REFERENCES Transportes(id_transporte)
 );
