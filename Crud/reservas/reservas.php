@@ -22,7 +22,7 @@ if ($pagina_actual < 1) {
 $offset = max(0, ($pagina_actual - 1) * $reservas_por_pagina);
 
 $sql = "SELECT r.id_reserva, c.nombre, rt.origen, rt.destino, 
-        DATE_FORMAT(r.fecha_reserva, '%Y-%m-%d %H:%i') as fecha_reserva, 
+        DATE_FORMAT(r.fecha_reserva, '%d-%m-%Y - %H:%i') as fecha_reserva, 
         r.estado, r.asiento, r.reservas_vendidas, t.tipo_transporte
         FROM Reservas r
         JOIN Clientes c ON r.id_cliente = c.id_cliente

@@ -77,20 +77,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" name="nombre" required 
-               pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,30}$" 
-               title="El nombre solo debe contener letras y un máximo de 30 caracteres.">
+        pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,29}$" 
+        title="El nombre debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 30 caracteres.">
     </div>
     <div class="mb-3">
         <label for="primer_apellido" class="form-label">Primer Apellido</label>
         <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" required 
-               pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{1,20}$" 
-               title="El apellido solo debe contener letras y un máximo de 20 caracteres.">
+            pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,19}$" 
+            title="El apellido debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 20 caracteres.">
     </div>
     <div class="mb-3">
         <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
         <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido"
-               pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{0,20}$" 
-               title="El apellido solo debe contener letras y un máximo de 20 caracteres.">
+        pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,19}$" 
+        title="El apellido debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 20 caracteres.">
     </div>
     <div class="mb-3">
         <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>

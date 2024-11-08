@@ -56,7 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 // Obtener clientes y viajes para los select
 $clientes = $conn->query("SELECT * FROM Clientes");
 $viajes = $conn->query("
-    SELECT v.id_viaje, t.tipo_transporte, rt.origen, rt.destino
+    SELECT v.id_viaje, t.tipo_transporte, rt.origen, rt.destino,
+                DATE_FORMAT(V.fecha_salida, '%d-%m-%Y') AS fecha_salida,
+                TIME_FORMAT(V.hora_salida, '%H:%i') AS hora_salida,
+                DATE_FORMAT(V.fecha_llegada, '%d-%m-%Y') AS fecha_llegada,
+                TIME_FORMAT(V.hora_llegada, '%H:%i') AS hora_llegada
     FROM Viajes v
     JOIN Rutas rt ON v.id_ruta = rt.id_ruta
     JOIN Transportes t ON v.id_transporte = t.id_transporte
@@ -112,7 +116,8 @@ $viajes = $conn->query("
             <option value="" disabled selected>Selecciona un viaje</option>
             <?php while ($row = $viajes->fetch_assoc()): ?>
                 <option value="<?php echo $row['id_viaje']; ?>">
-                    <?php echo $row['tipo_transporte'] . ' - ' . $row['origen'] . ' a ' . $row['destino']; ?>
+                    <?php echo $row['tipo_transporte'] . ' - ' . $row['origen'] . ' a ' . $row['destino'] 
+                    . ' - ' . $row['fecha_salida'] . ' ' . $row['hora_salida'] . ' : ' . $row['fecha_llegada'] . ' ' . $row['hora_llegada']; ?>
                 </option>
             <?php endwhile; ?>
         </select>

@@ -4,7 +4,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
 // Obtener rutas para mostrar en el formulario
-$sql_rutas = "SELECT * FROM Rutas";
+$sql_rutas = "SELECT id_ruta, nombre_ruta, TIME_FORMAT(duracion, '%H:%i') AS duracion FROM Rutas";
 $result_rutas = $conn->query($sql_rutas);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -71,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="mb-3">
         <label for="nombre_transporte" class="form-label">Marca</label>
         <input type="text" class="form-control" id="nombre_transporte" name="nombre_transporte" required
-               pattern="^[A-Za-z0-9\s\-]{2,50}$" 
-               title="La marca debe tener entre 2 y 50 caracteres y solo puede contener letras, números, guiones y espacios.">
+        pattern="^[A-Z][a-zA-Z0-9\s\-]{1,49}$" 
+        title="La marca debe comenzar con una letra mayúscula, tener entre 2 y 50 caracteres, y solo puede contener letras, números, guiones y espacios.">
     </div>
     <div class="mb-3">
         <label for="id_ruta" class="form-label">Ruta</label>
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php if ($result_rutas->num_rows > 0): ?>
                 <?php while ($row = $result_rutas->fetch_assoc()): ?>
                     <option value="<?php echo $row['id_ruta']; ?>">
-                        <?php echo $row['nombre_ruta'] . ' Duración : ' . $row['duracion']; ?>
+                        <?php echo $row['nombre_ruta'] . ' Duración: ' . $row['duracion']; ?>
                     </option>
                 <?php endwhile; ?>
             <?php else: ?>

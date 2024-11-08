@@ -20,7 +20,8 @@ if ($pagina_actual < 1) {
 
 $offset = max(0, ($pagina_actual - 1) * $transportes_por_pagina);
 
-$sql = "SELECT t.*, r.nombre_ruta, r.origen, r.destino 
+$sql = "SELECT t.*, r.nombre_ruta, r.origen, r.destino, 
+        TIME_FORMAT(t.tiempo_duracion, '%H:%i') AS tiempo_duracion
         FROM Transportes t 
         LEFT JOIN Rutas r ON t.id_ruta = r.id_ruta
         LIMIT $offset, $transportes_por_pagina";

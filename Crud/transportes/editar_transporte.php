@@ -4,7 +4,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 $id_transporte = $_GET['id'];
 
-$sql_rutas = "SELECT * FROM Rutas";
+// Obtener rutas para mostrar en el formulario
+$sql_rutas = "SELECT id_ruta, nombre_ruta, TIME_FORMAT(duracion, '%H:%i') AS duracion FROM Rutas";
 $result_rutas = $conn->query($sql_rutas);
 
 // Obtener el transporte existente
@@ -83,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <?php if ($result_rutas->num_rows > 0): ?>
                         <?php while ($row = $result_rutas->fetch_assoc()): ?>
                         <option value="<?php echo $row['id_ruta']; ?>" <?php echo $row['id_ruta'] == $transporte['id_ruta'] ? 'selected' : ''; ?>>
-                        <?php echo $row['nombre_ruta']; ?>
+                        <?php echo $row['nombre_ruta'] . ' Duración: ' . $row['duracion']; ?>
                         </option>
                         <?php endwhile; ?>
                         <?php else: ?>

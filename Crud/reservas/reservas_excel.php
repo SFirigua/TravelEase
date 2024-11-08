@@ -16,7 +16,11 @@ $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Reservas');
 
 // Obtener los viajes y las reservas de la base de datos
-$sql = "SELECT v.id_viaje, rt.origen, rt.destino, t.tipo_transporte, t.nombre_transporte
+$sql = "SELECT v.id_viaje, rt.origen, rt.destino, t.tipo_transporte, t.nombre_transporte,
+               DATE_FORMAT(v.fecha_salida, '%d-%m-%Y') AS fecha_salida,
+               TIME_FORMAT(v.hora_salida, '%H:%i') AS hora_salida,
+               DATE_FORMAT(v.fecha_llegada, '%d-%m-%Y') AS fecha_llegada,
+               TIME_FORMAT(v.hora_llegada, '%H:%i') AS hora_llegada
         FROM Viajes v
         JOIN Rutas rt ON v.id_ruta = rt.id_ruta
         JOIN Transportes t ON v.id_transporte = t.id_transporte";
@@ -36,45 +40,54 @@ if ($result_viajes->num_rows > 0) {
                         WHERE r.id_viaje = $id_viaje";
         $result_reservas = $conn->query($sql_reservas);
         
-        // Encabezado del viaje
+        // Encabezado del viaje con color
         $viajeTexto = 'Viaje: ' . $row_viaje['origen'] . ' a ' . $row_viaje['destino'] . ' - Transporte: ' . $row_viaje['tipo_transporte'] . ' ' . $row_viaje['nombre_transporte'];
         $sheet->setCellValue('A' . $rowNum, $viajeTexto);
         $sheet->mergeCells('A' . $rowNum . ':E' . $rowNum); // Merge cells for the travel header
         $sheet->getStyle('A' . $rowNum)->applyFromArray([
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT],
-            'font' => ['bold' => true]
+            'font' => ['bold' => true],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['argb' => 'FFFF99'], // Color de fondo del encabezado del viaje
+            ]
         ]);
         $rowNum++;
 
-        // Definir los encabezados de la tabla en Excel
-        $headers = ['Cliente', 'Asiento', 'N° Asientos', 'Fecha Reserva', 'Estado'];
-        $column = 'A';
-
-        foreach ($headers as $header) {
-            $sheet->setCellValue($column . $rowNum, $header);
-            $column++;
-        }
-
-        // Aplicar estilo a los encabezados
-        $headerStyle = [
-            'font' => [
-                'bold' => true,
-                'color' => ['argb' => Color::COLOR_WHITE],
-            ],
-            'fill' => [
-                'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'FF0070C0'], // Color de fondo
-            ],
-            'alignment' => [
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-            ],
-        ];
-
-        $sheet->getStyle('A' . $rowNum . ':E' . $rowNum)->applyFromArray($headerStyle);
+        // Agregar las fechas y horas de salida y llegada con color
+        $sheet->setCellValue('A' . $rowNum, 'Salida: ' . $row_viaje['fecha_salida'] . ' ' . $row_viaje['hora_salida'] );
+        $sheet->setCellValue('B' . $rowNum, 'Llegada: ' . $row_viaje['fecha_llegada'] . ' ' . $row_viaje['hora_llegada']);
         $rowNum++;
 
-        // Si hay reservas
+        // Definir los encabezados de la tabla en Excel (solo si hay reservas)
         if ($result_reservas->num_rows > 0) {
+            $headers = ['Cliente', 'Asiento', 'N° Asientos', 'Fecha Reserva', 'Estado'];
+            $column = 'A';
+
+            foreach ($headers as $header) {
+                $sheet->setCellValue($column . $rowNum, $header);
+                $column++;
+            }
+
+            // Aplicar estilo a los encabezados
+            $headerStyle = [
+                'font' => [
+                    'bold' => true,
+                    'color' => ['argb' => Color::COLOR_WHITE],
+                ],
+                'fill' => [
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => ['argb' => 'FF0070C0'], // Color de fondo
+                ],
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER,
+                ],
+            ];
+
+            $sheet->getStyle('A' . $rowNum . ':E' . $rowNum)->applyFromArray($headerStyle);
+            $rowNum++;
+            
+            // Agregar las reservas
             while ($row_reserva = $result_reservas->fetch_assoc()) {
                 $sheet->setCellValue('A' . $rowNum, $row_reserva['cliente']);
                 $sheet->setCellValue('B' . $rowNum, $row_reserva['asiento']);
@@ -91,14 +104,18 @@ if ($result_viajes->num_rows > 0) {
                 $rowNum++;
             }
         } else {
-            // Mensaje si no hay reservas
+            // Mensaje si no hay reservas (sin encabezados)
             $sheet->setCellValue('A' . $rowNum, 'No se han hecho reservas para este viaje.');
             $sheet->mergeCells('A' . $rowNum . ':E' . $rowNum);
             $sheet->getStyle('A' . $rowNum)->applyFromArray([
                 'alignment' => ['horizontal' => Alignment::HORIZONTAL_LEFT],
+                'font' => ['italic' => true], // Agregar un estilo para resaltar el mensaje
             ]);
             $rowNum++;
         }
+
+        // Agregar separación entre viajes (dejar una fila en blanco)
+        $rowNum++;
     }
 }
 

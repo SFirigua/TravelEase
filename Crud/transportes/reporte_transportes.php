@@ -13,8 +13,8 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         
         // Ancho de las columnas
-        $ancho_columna = 30;
-        $num_columnas = 6;
+        $ancho_columna = 25;
+        $num_columnas = 7;  
         $ancho_total = $ancho_columna * $num_columnas;
 
         // Calcular la posición X para centrar
@@ -26,7 +26,8 @@ class PDF extends FPDF {
         // Crear las celdas
         $this->Cell($ancho_columna, 10, utf8_decode('Transporte'), 1);
         $this->Cell($ancho_columna, 10, utf8_decode('Marca'), 1);
-        $this->Cell($ancho_columna, 10, utf8_decode('Capacidad Max.'), 1);
+        $this->Cell($ancho_columna, 10, utf8_decode('Cap. Max.'), 1);
+        $this->Cell($ancho_columna, 10, utf8_decode('Duración V.'), 1);
         $this->Cell($ancho_columna, 10, utf8_decode('Ruta'), 1);
         $this->Cell($ancho_columna, 10, utf8_decode('Origen'), 1);
         $this->Cell($ancho_columna, 10, utf8_decode('Destino'), 1);
@@ -37,8 +38,8 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 10);
         
         // Ancho de las columnas
-        $ancho_columna = 30;
-        $num_columnas = 6;
+        $ancho_columna = 25;
+        $num_columnas = 7;  
         $ancho_total = $ancho_columna * $num_columnas;
 
         // Calcular la posición X para centrar
@@ -50,6 +51,7 @@ class PDF extends FPDF {
             $this->Cell($ancho_columna, 10, utf8_decode($row['tipo_transporte']), 1);
             $this->Cell($ancho_columna, 10, utf8_decode($row['nombre_transporte']), 1);
             $this->Cell($ancho_columna, 10, $row['num_asientos'], 1);
+            $this->Cell($ancho_columna, 10, utf8_decode($row['tiempo_duracion']), 1);
             $this->Cell($ancho_columna, 10, utf8_decode($row['nombre_ruta']), 1);
             $this->Cell($ancho_columna, 10, utf8_decode($row['origen']), 1);
             $this->Cell($ancho_columna, 10, utf8_decode($row['destino']), 1);
@@ -65,7 +67,8 @@ class PDF extends FPDF {
 }
 
 // Obtener los transportes de la base de datos
-$sql = "SELECT t.*, r.nombre_ruta, r.origen, r.destino 
+$sql = "SELECT t.*, r.nombre_ruta, r.origen, r.destino,
+        TIME_FORMAT(t.tiempo_duracion, '%H:%i') AS tiempo_duracion
         FROM Transportes t 
         LEFT JOIN Rutas r ON t.id_ruta = r.id_ruta";
 $result = $conn->query($sql);

@@ -24,9 +24,9 @@ $sql = "SELECT V.*,
                T.tipo_transporte, 
                R.origen, 
                R.destino,
-               DATE_FORMAT(V.fecha_salida, '%Y-%m-%d') AS fecha_salida,
+               DATE_FORMAT(V.fecha_salida, '%d-%m-%Y') AS fecha_salida,
                TIME_FORMAT(V.hora_salida, '%H:%i') AS hora_salida,
-               DATE_FORMAT(V.fecha_llegada, '%Y-%m-%d') AS fecha_llegada,
+               DATE_FORMAT(V.fecha_llegada, '%d-%m-%Y') AS fecha_llegada,
                TIME_FORMAT(V.hora_llegada, '%H:%i') AS hora_llegada
         FROM Viajes V 
         JOIN Transportes T ON V.id_transporte = T.id_transporte

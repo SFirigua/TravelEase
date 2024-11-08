@@ -16,7 +16,7 @@ $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Transportes');
 
 // Encabezados de la tabla en Excel
-$headers = ['Transporte', 'Marca', 'Capacidad Max.', 'Ruta', 'Origen', 'Destino'];
+$headers = ['Transporte', 'Marca', 'Capacidad Max.', 'Ruta', 'Origen', 'Destino', 'Duración'];
 $column = 'A';
 
 foreach ($headers as $header) {
@@ -39,10 +39,12 @@ $headerStyle = [
     ],
 ];
 
-$sheet->getStyle('A1:F1')->applyFromArray($headerStyle);
+$sheet->getStyle('A1:G1')->applyFromArray($headerStyle); // Ajustar el rango a 7 columnas
 
 // Obtener los transportes de la base de datos
-$sql = "SELECT t.tipo_transporte, t.nombre_transporte, t.num_asientos, r.nombre_ruta, r.origen, r.destino 
+$sql = "SELECT t.tipo_transporte, t.nombre_transporte, t.num_asientos, 
+        r.nombre_ruta, r.origen, r.destino,
+        TIME_FORMAT(t.tiempo_duracion, '%H:%i') AS tiempo_duracion
         FROM Transportes t 
         LEFT JOIN Rutas r ON t.id_ruta = r.id_ruta";
 $result = $conn->query($sql);
@@ -57,9 +59,10 @@ if ($result->num_rows > 0) {
         $sheet->setCellValue('D' . $rowNum, $row['nombre_ruta']);
         $sheet->setCellValue('E' . $rowNum, $row['origen']);
         $sheet->setCellValue('F' . $rowNum, $row['destino']);
-        
+        $sheet->setCellValue('G' . $rowNum, $row['tiempo_duracion']); // Nueva columna para duración
+
         // Centrar el contenido de cada celda
-        $sheet->getStyle('A' . $rowNum . ':F' . $rowNum)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('A' . $rowNum . ':G' . $rowNum)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         
         $rowNum++;
     }
@@ -76,13 +79,13 @@ $styleArray = [
 ];
 
 // Aplicar borde a los encabezados
-$sheet->getStyle('A1:F1')->applyFromArray($styleArray);
+$sheet->getStyle('A1:G1')->applyFromArray($styleArray);
 
 // Aplicar borde a todos los datos
-$sheet->getStyle('A2:F' . ($rowNum - 1))->applyFromArray($styleArray);
+$sheet->getStyle('A2:G' . ($rowNum - 1))->applyFromArray($styleArray);
 
 // Ajustar el ancho de las columnas
-foreach (range('A', 'F') as $columnID) {
+foreach (range('A', 'G') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);
 }
 
