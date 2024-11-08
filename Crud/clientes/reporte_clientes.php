@@ -5,15 +5,22 @@ require($_SERVER['DOCUMENT_ROOT'] . '/TravelEase/libs/fpdf/fpdf.php');
 
 class PDF extends FPDF {
     function Header() {
+        $this->Image($_SERVER['DOCUMENT_ROOT'] . '/TravelEase/assets/img/logo.jpeg', 10, 8, 40);  
+
+        $this->SetFont('Arial', 'B', 18);
+        $this->SetXY(55, 10);
+        $this->Cell(50, 10, utf8_decode('TravelEase'), 0, 1, 'L');
+        
+        // Título del reporte centrado
         $this->SetFont('Arial', 'B', 16);
-        $this->Cell(0, 10, utf8_decode('Reporte de Clientes'), 0, 1, 'C');
-        $this->Ln(10);
+        $this->Cell(0, 20, utf8_decode('Reporte de Clientes'), 0, 1, 'C');
+        $this->Ln(5);
         
         // Cabecera de la tabla
         $this->SetFont('Arial', 'B', 10);
 
         // Ancho de las columnas
-        $ancho_columna = [30, 20, 40, 25, 50, 30]; // Modificar aquí para ajustar los anchos
+        $ancho_columna = [30, 20, 40, 25, 50, 30];
         $num_columnas = count($ancho_columna);
         $ancho_total = array_sum($ancho_columna);
 

@@ -5,9 +5,15 @@ require($_SERVER['DOCUMENT_ROOT'] . '/TravelEase/libs/fpdf/fpdf.php');
 
 class PDF extends FPDF {
     function Header() {
+        $this->Image($_SERVER['DOCUMENT_ROOT'] . '/TravelEase/assets/img/logo.jpeg', 10, 8, 40);  
+               
+        $this->SetFont('Arial', 'B', 18);
+        $this->SetXY(55, 10);
+        $this->Cell(50, 10, utf8_decode('TravelEase'), 0, 1, 'L');
+
         $this->SetFont('Arial', 'B', 16);
-        $this->Cell(0, 10, utf8_decode('Reporte de Reservas'), 0, 1, 'C');
-        $this->Ln(8);
+        $this->Cell(0, 20, utf8_decode('Reporte de Reservas'), 0, 1, 'C');
+        $this->Ln(5);
     }
 
     function CabeceraReservas() {

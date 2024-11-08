@@ -1,0 +1,15 @@
+.nav-link {
+    transition: transform 0.3s ease; 
+}
+
+.nav-link:hover {
+    transform: scale(1.07);
+}
+
+.btn {
+    transition: transform 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.03);
+}

@@ -9,19 +9,63 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 // Crear una nueva hoja de cálculo
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Clientes');
 
+$drawing = new Drawing();
+$drawing->setName('Logo');
+$drawing->setDescription('Logo de TravelEase');
+$drawing->setPath($_SERVER['DOCUMENT_ROOT'] . '/TravelEase/assets/img/logo.jpeg');
+$drawing->setHeight(100); // Ajusta la altura del logo
+$drawing->setCoordinates('A1'); // Posición inicial del logo
+$drawing->setWorksheet($sheet);
+
+// Agregar el nombre de la empresa debajo del logo
+$sheet->setCellValue('B1', 'TravelEase');
+$sheet->getStyle('B1')->applyFromArray([
+    'font' => [
+        'bold' => true,
+        'size' => 22,
+    ],
+    'alignment' => [
+        'horizontal' => Alignment::HORIZONTAL_LEFT,
+    ],
+]);
+
+// Espacio para el encabezado de la tabla
+$sheet->setCellValue('A6', 'Reporte de Clientes:');
+$sheet->getStyle('A6')->applyFromArray([
+    'font' => [
+        'bold' => true,
+        'color' => ['argb' => Color::COLOR_WHITE],
+    ],
+    'fill' => [
+        'fillType' => Fill::FILL_SOLID,
+        'startColor' => ['argb' => 'FF0070C0'],
+    ],
+    'borders' => [
+        'allBorders' => [
+            'borderStyle' => Border::BORDER_THIN,
+            'color' => ['argb' => 'FF000000'],
+        ],
+    ],
+    'alignment' => [
+        'horizontal' => Alignment::HORIZONTAL_LEFT,
+    ],
+]);
+
 // Encabezados de la tabla en Excel
 $headers = ['Nombre', 'Primer Apellido', 'Segundo Apellido', 'Género', 'Tipo de Identificación', 
-    'Número de Identificación', 'Número Celular', 'Correo Electrónico', 'Residencia', 'Fecha de Nacimiento', ];
+    'Número de Identificación', 'Número Celular', 'Correo Electrónico', 'Residencia', 'Fecha de Nacimiento'];
 $column = 'A';
 
+// Mover encabezados a la fila 7
 foreach ($headers as $header) {
-    $sheet->setCellValue($column . '1', $header);
+    $sheet->setCellValue($column . '7', $header); // Cambié '5' por '7'
     $column++;
 }
 
@@ -40,14 +84,14 @@ $headerStyle = [
     ],
 ];
 
-$sheet->getStyle('A1:J1')->applyFromArray($headerStyle);
+$sheet->getStyle('A7:J7')->applyFromArray($headerStyle); // Cambié '5' por '7'
 
 // Obtener los clientes de la base de datos
 $sql = "SELECT id_cliente, nombre, primer_apellido, segundo_apellido, tipo_identificacion, numero_identificacion, numero_celular, email, direccion, fecha_nacimiento, genero FROM Clientes";
 $result = $conn->query($sql);
 
 // Llenar los datos en la hoja de cálculo
-$rowNum = 2;
+$rowNum = 8; // Cambié el valor de 6 a 8 para iniciar debajo de los encabezados
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $sheet->setCellValue('A' . $rowNum, $row['nombre']);
@@ -79,10 +123,10 @@ $styleArray = [
 ];
 
 // Aplicar borde a los encabezados
-$sheet->getStyle('A1:J1')->applyFromArray($styleArray);
+$sheet->getStyle('A7:J7')->applyFromArray($styleArray); // Cambié '5' por '7'
 
 // Aplicar borde a todos los datos
-$sheet->getStyle('A2:J' . ($rowNum - 1))->applyFromArray($styleArray);
+$sheet->getStyle('A8:J' . ($rowNum - 1))->applyFromArray($styleArray); // Cambié '6' por '8'
 
 // Ajustar el ancho de las columnas
 foreach (range('A', 'J') as $columnID) {
