@@ -55,58 +55,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-5">
     <div class="container mt-5">
-        <h2>Editar Cliente</h2>
-        <form method="POST">
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $cliente['nombre']; ?>" required>
+        <h2 class="mb-4">Editar Cliente</h2>
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo htmlspecialchars($cliente['nombre']); ?>" required>
+                    <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="primer_apellido" class="form-label">Primer Apellido</label>
+                    <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" value="<?php echo htmlspecialchars($cliente['primer_apellido']); ?>" required>
+                    <div class="invalid-feedback">Por favor ingrese el primer apellido.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
+                    <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido" value="<?php echo htmlspecialchars($cliente['segundo_apellido']); ?>">
+                </div>
+                <div class="col-md-6">
+                    <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
+                    <select id="tipo_identificacion" name="tipo_identificacion" class="form-select" required>
+                        <option value="Cédula de Ciudadanía" <?php echo $cliente['tipo_identificacion'] == 'Cédula de Ciudadanía' ? 'selected' : ''; ?>>Cédula de Ciudadanía</option>
+                        <option value="Cédula de Extranjería" <?php echo $cliente['tipo_identificacion'] == 'Cédula de Extranjería' ? 'selected' : ''; ?>>Cédula de Extranjería</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="numero_identificacion" class="form-label">Número de Identificación</label>
+                    <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" value="<?php echo htmlspecialchars($cliente['numero_identificacion']); ?>" required>
+                    <div class="invalid-feedback">Por favor ingrese el número de identificación.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="numero_celular" class="form-label">Número Celular</label>
+                    <input type="text" class="form-control" id="numero_celular" name="numero_celular" value="<?php echo htmlspecialchars($cliente['numero_celular']); ?>" required>
+                    <div class="invalid-feedback">Por favor ingrese el número celular.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($cliente['email']); ?>" required>
+                    <div class="invalid-feedback">Por favor ingrese un correo válido.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="direccion" name="direccion" value="<?php echo htmlspecialchars($cliente['direccion']); ?>" required>
+                    <div class="invalid-feedback">Por favor ingrese la dirección.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo htmlspecialchars($cliente['fecha_nacimiento']); ?>" required>
+                    <div class="invalid-feedback">Por favor seleccione una fecha válida.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="genero" class="form-label">Género</label>
+                    <select id="genero" name="genero" class="form-select" required>
+                        <option value="M" <?php echo $cliente['genero'] == 'M' ? 'selected' : ''; ?>>Masculino</option>
+                        <option value="F" <?php echo $cliente['genero'] == 'F' ? 'selected' : ''; ?>>Femenino</option>
+                        <option value="Otro" <?php echo $cliente['genero'] == 'Otro' ? 'selected' : ''; ?>>Otro</option>
+                    </select>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="primer_apellido" class="form-label">Primer Apellido</label>
-                <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" value="<?php echo $cliente['primer_apellido']; ?>" required>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Actualizar Cliente</button>
+                <a href="clientes.php" class="btn btn-secondary">Cancelar</a>
             </div>
-            <div class="mb-3">
-                <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
-                <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido" value="<?php echo $cliente['segundo_apellido']; ?>">
-            </div>
-            <div class="mb-3">
-                <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
-                <select id="tipo_identificacion" name="tipo_identificacion" class="form-select" required>
-                    <option value="Cédula de Ciudadanía" <?php echo $cliente['tipo_identificacion'] == 'Cédula de Ciudadanía' ? 'selected' : ''; ?>>Cédula de Ciudadanía</option>
-                    <option value="Cédula de Extranjería" <?php echo $cliente['tipo_identificacion'] == 'Cédula de Extranjería' ? 'selected' : ''; ?>>Cédula de Extranjería</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="numero_identificacion" class="form-label">Número de Identificación</label>
-                <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" value="<?php echo $cliente['numero_identificacion']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="numero_celular" class="form-label">Número Celular</label>
-                <input type="text" class="form-control" id="numero_celular" name="numero_celular" value="<?php echo $cliente['numero_celular']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $cliente['email']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="direccion" class="form-label">Dirección</label>
-                <input type="text" class="form-control" id="direccion" name="direccion" value="<?php echo $cliente['direccion']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
-                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo $cliente['fecha_nacimiento']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="genero" class="form-label">Género</label>
-                <select id="genero" name="genero" class="form-select" required>
-                    <option value="<?php echo $cliente['genero']; ?>" selected><?php echo $cliente['genero']; ?></option>
-                    <option value="M">Masculino</option>
-                    <option value="F">Femenino</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Actualizar Cliente</button>
-            <a href="clientes.php" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </main>

@@ -74,71 +74,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php endif; ?>
 
         <form method="POST">
-    <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" name="nombre" required 
-        pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,29}$" 
-        title="El nombre debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 30 caracteres.">
-    </div>
-    <div class="mb-3">
-        <label for="primer_apellido" class="form-label">Primer Apellido</label>
-        <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" required 
-            pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,19}$" 
-            title="El apellido debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 20 caracteres.">
-    </div>
-    <div class="mb-3">
-        <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
-        <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido"
-        pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,19}$" 
-        title="El apellido debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 20 caracteres.">
-    </div>
-    <div class="mb-3">
-        <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
-        <select id="tipo_identificacion" name="tipo_identificacion" class="form-select" required>
-            <option value="" disabled selected>Selecciona el tipo de identificación</option>
-            <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
-            <option value="Cédula de Extranjería">Cédula de Extranjería</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="numero_identificacion" class="form-label">Número de Identificación</label>
-        <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" required 
-               pattern="^\d{6,12}$" 
-               title="El número de identificación debe contener entre 6 y 12 dígitos.">
-    </div>
-    <div class="mb-3">
-        <label for="numero_celular" class="form-label">Número Celular</label>
-        <input type="text" class="form-control" id="numero_celular" name="numero_celular" required 
-               pattern="^\d{10}$" 
-               title="El número celular debe contener exactamente 10 dígitos.">
-    </div>
-    <div class="mb-3">
-        <label for="email" class="form-label">Correo Electrónico</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-    </div>
-    <div class="mb-3">
-        <label for="direccion" class="form-label">Dirección</label>
-        <input type="text" class="form-control" id="direccion" name="direccion" required 
-               pattern="^[A-Za-z0-9\s,#-]{5,100}$" 
-               title="La dirección debe contener entre 5 y 100 caracteres y puede incluir letras, números y símbolos (#, -).">
-    </div>
-    <div class="mb-3">
-        <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
-        <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
-    </div>
-    <div class="mb-3">
-        <label for="genero" class="form-label">Género</label>
-        <select id="genero" name="genero" class="form-select" required>
-            <option value="" disabled selected>Selecciona el género</option>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
-            <option value="Otro">Otro</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Agregar Cliente</button>
-    <a href="clientes.php" class="btn btn-secondary">Cancelar</a>
-</form>
-
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required 
+                           pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,29}$" 
+                           title="El nombre debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 30 caracteres.">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="primer_apellido" class="form-label">Primer Apellido</label>
+                    <input type="text" class="form-control" id="primer_apellido" name="primer_apellido" required 
+                           pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,19}$" 
+                           title="El apellido debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 20 caracteres.">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="segundo_apellido" class="form-label">Segundo Apellido</label>
+                    <input type="text" class="form-control" id="segundo_apellido" name="segundo_apellido"
+                           pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ\s]{0,19}$" 
+                           title="El apellido debe comenzar con una letra mayúscula, solo debe contener letras y un máximo de 20 caracteres.">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="tipo_identificacion" class="form-label">Tipo de Identificación</label>
+                    <select id="tipo_identificacion" name="tipo_identificacion" class="form-select" required>
+                        <option value="" disabled selected>Selecciona el tipo de identificación</option>
+                        <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                        <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="numero_identificacion" class="form-label">Número de Identificación</label>
+                    <input type="text" class="form-control" id="numero_identificacion" name="numero_identificacion" required 
+                           pattern="^\d{6,12}$" 
+                           title="El número de identificación debe contener entre 6 y 12 dígitos.">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="numero_celular" class="form-label">Número Celular</label>
+                    <input type="text" class="form-control" id="numero_celular" name="numero_celular" required 
+                           pattern="^\d{10}$" 
+                           title="El número celular debe contener exactamente 10 dígitos.">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="direccion" name="direccion" required 
+                           pattern="^[A-Za-z0-9\s,#-]{5,100}$" 
+                           title="La dirección debe contener entre 5 y 100 caracteres y puede incluir letras, números y símbolos (#, -).">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="genero" class="form-label">Género</label>
+                    <select id="genero" name="genero" class="form-select" required>
+                        <option value="" disabled selected>Selecciona el género</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Agregar Cliente</button>
+            <a href="clientes.php" class="btn btn-secondary mt-3">Cancelar</a>
+        </form>
     </div>
 </main>
 

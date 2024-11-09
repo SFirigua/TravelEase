@@ -73,14 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </select>
             </div>
             <div class="mb-3">
-                <label for="origen" class="form-label">Origen</label>
-                <input type="text" class="form-control" id="origen" name="origen" value="<?php echo $viaje['origen']; ?>" required readonly>
-            </div>
-            <div class="mb-3">
-                <label for="destino" class="form-label">Destino</label>
-                <input type="text" class="form-control" id="destino" name="destino" value="<?php echo $viaje['destino']; ?>" required readonly>
-            </div>
-            <div class="mb-3">
                 <label for="fecha_salida" class="form-label">Fecha Salida</label>
                 <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" value="<?php echo $viaje['fecha_salida']; ?>" 
                 min="<?php echo date('Y-m-d'); ?>" required>
