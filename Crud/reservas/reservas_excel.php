@@ -9,11 +9,55 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 // Crear una nueva hoja de cálculo
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setTitle('Reporte de Reservas');
+
+// Insertar logo en la hoja de cálculo
+$drawing = new Drawing();
+$drawing->setName('Logo');
+$drawing->setDescription('Logo de TravelEase');
+$drawing->setPath($_SERVER['DOCUMENT_ROOT'] . '/TravelEase/assets/img/logo.jpeg');
+$drawing->setHeight(100); // Ajusta la altura del logo
+$drawing->setCoordinates('A1'); // Posición inicial del logo
+$drawing->setWorksheet($sheet);
+
+// Agregar el nombre de la empresa debajo del logo
+$sheet->setCellValue('B1', 'TravelEase');
+$sheet->getStyle('B1')->applyFromArray([
+    'font' => [
+        'bold' => true,
+        'size' => 22,
+    ],
+    'alignment' => [
+        'horizontal' => Alignment::HORIZONTAL_LEFT,
+    ],
+]);
+
+// Espacio para el encabezado de la tabla
+$sheet->setCellValue('A6', 'Reporte de Reservas:');
+$sheet->getStyle('A6')->applyFromArray([
+    'font' => [
+        'bold' => true,
+        'color' => ['argb' => Color::COLOR_WHITE],
+    ],
+    'fill' => [
+        'fillType' => Fill::FILL_SOLID,
+        'startColor' => ['argb' => 'FF0070C0'],
+    ],
+    'borders' => [
+        'allBorders' => [
+            'borderStyle' => Border::BORDER_THIN,
+            'color' => ['argb' => 'FF000000'],
+        ],
+    ],
+    'alignment' => [
+        'horizontal' => Alignment::HORIZONTAL_LEFT,
+    ],
+]);
 
 // Obtener los viajes y las reservas de la base de datos
 $sql = "SELECT v.id_viaje, rt.origen, rt.destino, t.tipo_transporte, t.nombre_transporte,
@@ -27,7 +71,7 @@ $sql = "SELECT v.id_viaje, rt.origen, rt.destino, t.tipo_transporte, t.nombre_tr
 $result_viajes = $conn->query($sql);
 
 // Llenar los datos en la hoja de cálculo
-$rowNum = 1; // Cambiar a 1 para incluir encabezados después
+$rowNum = 7; // Cambiar a 1 para incluir encabezados después
 if ($result_viajes->num_rows > 0) {
     while ($row_viaje = $result_viajes->fetch_assoc()) {
         // Obtener las reservas para este viaje
@@ -129,19 +173,18 @@ $styleArray = [
     ],
 ];
 
-$sheet->getStyle('A1:E' . ($rowNum - 1))->applyFromArray($styleArray);
+$sheet->getStyle('A7:E' . ($rowNum - 1))->applyFromArray($styleArray);
 
 // Ajustar automáticamente el ancho de las columnas
 foreach (range('A', 'E') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);
 }
 
-// Configurar los encabezados para descargar el archivo como Excel
-header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="reservas.xlsx"');
+// Descargar el archivo Excel
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment; filename="Reservas.xlsx"');
 header('Cache-Control: max-age=0');
 
-// Escribir el archivo Excel en la salida
 $writer = new Xlsx($spreadsheet);
 $writer->save('php://output');
 exit;

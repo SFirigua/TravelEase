@@ -143,5 +143,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </main>
 
-
+<script src="/TravelEase/assets/js/fecha_nacimiento.js"></script>
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/footer.php'; ?>
