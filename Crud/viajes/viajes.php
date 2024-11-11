@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Bogota');
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
 
@@ -8,7 +9,6 @@ $viajes_por_pagina = 5;
 $sql_total = "SELECT COUNT(*) as total FROM Viajes";
 $result_total = $conn->query($sql_total);
 $total_viajes = $result_total->fetch_assoc()['total'];
-
 $total_paginas = ceil($total_viajes / $viajes_por_pagina);
 
 $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
@@ -33,6 +33,21 @@ $sql = "SELECT V.*,
         JOIN Rutas R ON V.id_ruta = R.id_ruta
         LIMIT $offset, $viajes_por_pagina";
 $result = $conn->query($sql);
+
+// Función para actualizar el estado según la fecha y hora
+function actualizarEstadoViaje($fecha_salida, $hora_salida, $fecha_llegada, $hora_llegada) {
+    $fecha_actual = date('d-m-Y');
+    $hora_actual = date('H:i:s');
+
+    if ($fecha_actual >= $fecha_llegada && $hora_actual > $hora_llegada) {
+        return 'Finalizado';
+    } elseif ($fecha_actual >= $fecha_salida && $hora_actual >= $hora_salida) {
+        return 'En curso';
+    } else {
+        return 'Programado';
+    }    
+}
+
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -41,7 +56,7 @@ $result = $conn->query($sql);
         <a href="agregar_viaje.php" class="btn btn-success mb-3">Agregar Viaje</a>
         <a href="reporte_viajes.php" class="btn btn-danger mb-3 ms-2" target="_blank">Reporte PDF</a>
         <a href="viajes_excel.php" class="btn btn-primary mb-3 ms-2">Descargar en Excel</a>
-        
+
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger">
                 <?php
@@ -78,6 +93,14 @@ $result = $conn->query($sql);
             <tbody>
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
+                        <?php 
+                            // Actualizar el estado basado en las fechas y horas
+                            $estado_actual = actualizarEstadoViaje($row['fecha_salida'], $row['hora_salida'], $row['fecha_llegada'], $row['hora_llegada']);
+                            if ($estado_actual !== $row['estado']) {
+                                $sql_update = "UPDATE Viajes SET estado = '$estado_actual' WHERE id_viaje = {$row['id_viaje']}";
+                                $conn->query($sql_update);
+                            }
+                        ?>
                         <tr>
                             <td><?php echo $row['tipo_transporte']; ?></td>
                             <td><?php echo $row['origen']; ?></td>
@@ -87,7 +110,7 @@ $result = $conn->query($sql);
                             <td><?php echo $row['fecha_llegada']; ?></td>
                             <td><?php echo $row['hora_llegada']; ?></td>
                             <td><?php echo $row['precio']; ?></td>
-                            <td><?php echo $row['estado']; ?></td>
+                            <td><?php echo $estado_actual; ?></td>
                             <td>
                                 <a href="editar_viaje.php?id=<?php echo $row['id_viaje']; ?>" class="btn btn-warning"> <i class="fas fa-edit"></i> </a>
                                 
