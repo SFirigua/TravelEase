@@ -85,15 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="precio" class="form-label">Precio</label>
                 <input type="number" class="form-control" id="precio" name="precio" value="<?php echo $viaje['precio']; ?>" step="0.01" required>
             </div>
-            <div class="mb-3">
-                <label for="estado" class="form-label">Estado</label>
-                <select class="form-select" id="estado" name="estado">
-                    <option value="Programado" <?php echo ($viaje['estado'] == 'Programado') ? 'selected' : ''; ?>>Programado</option>
-                    <option value="Cancelado" <?php echo ($viaje['estado'] == 'Cancelado') ? 'selected' : ''; ?>>Cancelado</option>
-                    <option value="En curso" <?php echo ($viaje['estado'] == 'En curso') ? 'selected' : ''; ?>>En curso</option>
-                    <option value="Finalizado" <?php echo ($viaje['estado'] == 'Finalizado') ? 'selected' : ''; ?>>Finalizado</option>
-                </select>
-            </div>
             <button type="submit" class="btn btn-primary">Actualizar Viaje</button>
             <a href="viajes.php" class="btn btn-secondary">Cancelar</a>
         </form>

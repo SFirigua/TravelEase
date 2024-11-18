@@ -87,16 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                min="0" max="100000" 
                title="Ingrese un precio entre 0 y 100,000.00.">
     </div>
-    <div class="mb-3">
-        <label for="estado" class="form-label">Estado</label>
-        <select class="form-select" id="estado" name="estado" required>
-            <option value="" disabled selected>Seleccione un estado</option>
-            <option value="Programado">Programado</option>
-            <option value="Cancelado">Cancelado</option>
-            <option value="En curso">En curso</option>
-            <option value="Finalizado">Finalizado</option>
-        </select>
-    </div>
     <button type="submit" class="btn btn-primary">Agregar Viaje</button>
     <a href="viajes.php" class="btn btn-secondary">Cancelar</a>
 </form>
