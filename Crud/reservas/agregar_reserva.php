@@ -38,7 +38,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    // Insertar la nueva reserva si pasa la validación
+    // Validar el estado del viaje
+    $consulta_estado = "SELECT estado FROM Viajes WHERE id_viaje = '$id_viaje'";
+    $result_estado = $conn->query($consulta_estado);
+    $estado_viaje = $result_estado->fetch_assoc()['estado'] ?? null;
+
+    if ($estado_viaje === 'En curso' || $estado_viaje === 'Finalizado') {
+        $_SESSION['error'] = "Error: No se pueden realizar reservas en viajes con estado '$estado_viaje'.";
+        header("Location: /TravelEase/crud/reservas/agregar_reserva.php");
+        exit();
+    }
+
+    // Insertar la nueva reserva si pasa las validación
     $sql = "INSERT INTO Reservas (id_cliente, id_viaje, reservas_vendidas, estado, asiento) 
             VALUES ('$id_cliente', '$id_viaje', '$reservas_vendidas', '$estado', '$asiento')";
     

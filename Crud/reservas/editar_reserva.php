@@ -56,7 +56,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    // Actualizar la reserva si los asientos están disponibles
+    // Validar el estado del viaje
+    $consulta_estado = "SELECT estado FROM Viajes WHERE id_viaje = '$id_viaje'";
+    $result_estado = $conn->query($consulta_estado);
+    $estado_viaje = $result_estado->fetch_assoc()['estado'] ?? null;
+
+    if ($estado_viaje === 'En curso' || $estado_viaje === 'Finalizado') {
+        $_SESSION['error'] = "Error: No se pueden realizar modificaciones en reservas de viajes con estado '$estado_viaje'.";
+        header("Location: /TravelEase/crud/reservas/editar_reserva.php?id=$id_reserva");
+        exit();
+    }
+
+    // Actualizar la reserva si pasa las validaciones
     $sql = "UPDATE Reservas SET id_cliente='$id_cliente', id_viaje='$id_viaje', fecha_reserva='$fecha_reserva', reservas_vendidas='$reservas_vendidas', estado='$estado', asiento='$asiento' 
             WHERE id_reserva = $id_reserva";
     
