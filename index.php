@@ -1,7 +1,7 @@
 <?php
 session_start();
-include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/header.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/TravelEase/includes/conexion.php';
+include './TravelEase/includes/header.php';
+include './TravelEase/includes/conexion.php';
 
 // Obtener número total de clientes y desglose por tipo de identificación
 $stmtClientes = $conn->query("SELECT COUNT(*) AS total_clientes,
